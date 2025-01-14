@@ -12,7 +12,6 @@ import java.util.Objects;
  */
 public class ChessPiece {
 
-
     private final ChessGame.TeamColor color;
     private final PieceType type;
 
