@@ -11,9 +11,10 @@ import java.util.Objects;
  */
 public class ChessBoard {
 
-    private final ChessPiece[][] squares = new ChessPiece[8][8];
+    public final ChessPiece[][] squares;
 
     public ChessBoard() {
+        squares = new ChessPiece[8][8];
     }
 
 
@@ -101,5 +102,12 @@ public class ChessBoard {
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(squares);
+    }
+
+    @Override
+    public String toString() {
+        return "ChessBoard{" +
+                "squares=" + Arrays.toString(squares) +
+                '}';
     }
 }
