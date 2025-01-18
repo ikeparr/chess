@@ -71,7 +71,7 @@ public class ChessPiece {
         if (type == PieceType.ROOK) {
             calculator = new RookMoveCalculator();
         }
-
+        //Temp Place Holder
         if (calculator == null) {
             return new ArrayList<>();
         }
