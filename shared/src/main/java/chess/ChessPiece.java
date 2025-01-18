@@ -3,6 +3,7 @@ package chess;
 import chess.PiecesMoveCalculator.BishopMoveCalculator;
 import chess.PiecesMoveCalculator.KingMoveCalculator;
 import chess.PiecesMoveCalculator.PieceMoveCalculator;
+import chess.PiecesMoveCalculator.RookMoveCalculator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -66,6 +67,9 @@ public class ChessPiece {
 
         if (type == PieceType.BISHOP) {
             calculator = new BishopMoveCalculator();
+        }
+        if (type == PieceType.ROOK) {
+            calculator = new RookMoveCalculator();
         }
 
         if (calculator == null) {
