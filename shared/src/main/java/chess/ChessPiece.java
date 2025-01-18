@@ -1,5 +1,9 @@
 package chess;
 
+import chess.PiecesMoveCalculator.BishopMoveCalculator;
+import chess.PiecesMoveCalculator.KingMoveCalculator;
+import chess.PiecesMoveCalculator.PieceMoveCalculator;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
@@ -57,9 +61,20 @@ public class ChessPiece {
      *
      * @return Collection of valid moves
      */
-    public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        return new ArrayList<>();
+    public ArrayList<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+        PieceMoveCalculator calculator = null;
+
+        if (type == PieceType.BISHOP) {
+            calculator = new BishopMoveCalculator();
+        }
+
+        if (calculator == null) {
+            return new ArrayList<>();
+        }
+        ChessGame.TeamColor teamColor = this.getTeamColor();
+        return calculator.possibleMoves(board, myPosition, teamColor);
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -70,8 +85,18 @@ public class ChessPiece {
         return color == that.color && type == that.type;
     }
 
+
     @Override
     public int hashCode() {
         return Objects.hash(color, type);
+    }
+
+
+    @Override
+    public String toString() {
+        return "ChessPiece{" +
+                "color=" + color +
+                ", type=" + type +
+                '}';
     }
 }
