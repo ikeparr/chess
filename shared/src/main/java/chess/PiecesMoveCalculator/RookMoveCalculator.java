@@ -1,4 +1,91 @@
 package chess.PiecesMoveCalculator;
 
-public class RookMoveCalculator {
+import chess.*;
+import java.util.ArrayList;
+
+public class RookMoveCalculator implements PieceMoveCalculator {
+
+    public ArrayList<ChessMove> possibleMoves(ChessBoard chessBoard, ChessPosition currentPosition, ChessGame.TeamColor teamColor) {
+        ArrayList<ChessMove> moves = new ArrayList<>();
+
+        int startRow = currentPosition.getRow();
+        int startColumn = currentPosition.getColumn();
+
+        //Need for loop check U, D, L, R, will use for Q. Each is for loop.
+        //Up
+        for (int i = 1; i < 8; i++) {
+            if (PieceMoveCalculator.moveInBounds(startRow + i, startColumn)) {
+                if (PieceMoveCalculator.isValidSquare(chessBoard, startRow + i, startColumn, teamColor)) {
+                    ChessPosition newPosition = new ChessPosition(startRow + i, startColumn);
+                    moves.add(new ChessMove(currentPosition, newPosition, null));
+
+                    if (PieceMoveCalculator.isOpponentSquare(chessBoard, startRow + i, startColumn, teamColor)) {
+                        break;
+                    }
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        //Down
+        for (int i = 1; i < 8; i++) {
+            if (PieceMoveCalculator.moveInBounds(startRow - i, startColumn)) {
+                if (PieceMoveCalculator.isValidSquare(chessBoard, startRow - i, startColumn, teamColor)) {
+                    ChessPosition newPosition = new ChessPosition(startRow - i, startColumn);
+                    moves.add(new ChessMove(currentPosition, newPosition, null));
+
+                    if (PieceMoveCalculator.isOpponentSquare(chessBoard, startRow - i, startColumn, teamColor)) {
+                        break;
+                    }
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        //Left
+        for (int i = 1; i < 8; i++) {
+            if (PieceMoveCalculator.moveInBounds(startRow, startColumn - i)) {
+                if (PieceMoveCalculator.isValidSquare(chessBoard, startRow, startColumn - i, teamColor)) {
+                    ChessPosition newPosition = new ChessPosition(startRow, startColumn - i);
+                    moves.add(new ChessMove(currentPosition, newPosition, null));
+
+                    if (PieceMoveCalculator.isOpponentSquare(chessBoard, startRow, startColumn - i, teamColor)) {
+                        break;
+                    }
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        //Right
+        for (int i = 1; i < 8; i++) {
+            if (PieceMoveCalculator.moveInBounds(startRow, startColumn + i)) {
+                if (PieceMoveCalculator.isValidSquare(chessBoard, startRow, startColumn + i, teamColor)) {
+                    ChessPosition newPosition = new ChessPosition(startRow, startColumn + i);
+                    moves.add(new ChessMove(currentPosition, newPosition, null));
+
+                    if (PieceMoveCalculator.isOpponentSquare(chessBoard, startRow, startColumn + i, teamColor)) {
+                        break;
+                    }
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        return moves;
+    }
 }
+
+
