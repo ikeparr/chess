@@ -1,9 +1,6 @@
 package chess;
 
-import chess.PiecesMoveCalculator.BishopMoveCalculator;
-import chess.PiecesMoveCalculator.KingMoveCalculator;
-import chess.PiecesMoveCalculator.PieceMoveCalculator;
-import chess.PiecesMoveCalculator.RookMoveCalculator;
+import chess.PiecesMoveCalculator.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,6 +67,9 @@ public class ChessPiece {
         }
         if (type == PieceType.ROOK) {
             calculator = new RookMoveCalculator();
+        }
+        if (type == PieceType.QUEEN) {
+            calculator = new QueenMoveCalculator();
         }
         //Temp Place Holder
         if (calculator == null) {
