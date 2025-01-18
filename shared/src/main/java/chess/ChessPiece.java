@@ -71,6 +71,9 @@ public class ChessPiece {
         if (type == PieceType.QUEEN) {
             calculator = new QueenMoveCalculator();
         }
+        if (type == PieceType.KING) {
+            calculator = new KingMoveCalculator();
+        }
         //Temp Place Holder
         if (calculator == null) {
             return new ArrayList<>();
