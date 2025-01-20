@@ -11,7 +11,7 @@ public class QueenMoveCalculator implements PieceMoveCalculator {
         int startRow = currentPosition.getRow();
         int startColumn = currentPosition.getColumn();
 
-        //Up
+        //UP
         for (int i = 1; i < 8; i++) {
             if (PieceMoveCalculator.moveInBounds(startRow + i, startColumn)) {
                 if (PieceMoveCalculator.isValidSquare(chessBoard, startRow + i, startColumn, teamColor)) {
@@ -29,7 +29,7 @@ public class QueenMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-        //Down
+        //DOWN
         for (int i = 1; i < 8; i++) {
             if (PieceMoveCalculator.moveInBounds(startRow - i, startColumn)) {
                 if (PieceMoveCalculator.isValidSquare(chessBoard, startRow - i, startColumn, teamColor)) {
@@ -47,7 +47,7 @@ public class QueenMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-        //Left
+        //LEFT
         for (int i = 1; i < 8; i++) {
             if (PieceMoveCalculator.moveInBounds(startRow, startColumn - i)) {
                 if (PieceMoveCalculator.isValidSquare(chessBoard, startRow, startColumn - i, teamColor)) {
@@ -65,7 +65,7 @@ public class QueenMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-        //Right
+        //RIGHT
         for (int i = 1; i < 8; i++) {
             if (PieceMoveCalculator.moveInBounds(startRow, startColumn + i)) {
                 if (PieceMoveCalculator.isValidSquare(chessBoard, startRow, startColumn + i, teamColor)) {
@@ -154,7 +154,6 @@ public class QueenMoveCalculator implements PieceMoveCalculator {
                 break;
             }
         }
-
         return moves;
     }
 }

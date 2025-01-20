@@ -11,7 +11,6 @@ public class BishopMoveCalculator implements PieceMoveCalculator {
         int startRow = currentPosition.getRow();
         int startColumn = currentPosition.getColumn();
 
-        //Need for loop check UL UR DL DR, will use for Q, R, & B. Each is for loop.
         //UpRIGHT
         for (int i = 1; i < 8; i++) {
             if (PieceMoveCalculator.moveInBounds(startRow + i, startColumn + i)) {
@@ -30,7 +29,7 @@ public class BishopMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-        //UpLeft
+        //UpLEFT
         for (int i = 1; i < 8; i++) {
             if (PieceMoveCalculator.moveInBounds(startRow + i, startColumn - i)) {
                 if (PieceMoveCalculator.isValidSquare(chessBoard, startRow + i, startColumn - i, teamColor)) {
@@ -48,7 +47,7 @@ public class BishopMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-        //DownLeft
+        //DownLEFT
         for (int i = 1; i < 8; i++) {
             if (PieceMoveCalculator.moveInBounds(startRow - i, startColumn - i)) {
                 if (PieceMoveCalculator.isValidSquare(chessBoard, startRow - i, startColumn - i, teamColor)) {
@@ -66,7 +65,7 @@ public class BishopMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-        //DownRight
+        //DownRIGHT
         for (int i = 1; i < 8; i++) {
             if (PieceMoveCalculator.moveInBounds(startRow - i, startColumn + i)) {
                 if (PieceMoveCalculator.isValidSquare(chessBoard, startRow - i, startColumn + i, teamColor)) {
@@ -83,7 +82,6 @@ public class BishopMoveCalculator implements PieceMoveCalculator {
                 break;
             }
         }
-
         return moves;
     }
 }

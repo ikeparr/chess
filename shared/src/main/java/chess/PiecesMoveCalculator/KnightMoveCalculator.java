@@ -14,7 +14,7 @@ public class KnightMoveCalculator implements PieceMoveCalculator {
         int startRow = currentPosition.getRow();
         int startColumn = currentPosition.getColumn();
 
-        //NorthEast
+        //NorthEAST
         if (PieceMoveCalculator.moveInBounds(startRow + 2, startColumn + 1)) {
             if (PieceMoveCalculator.isValidSquare(chessBoard, startRow + 2, startColumn + 1, teamColor)) {
                 ChessPosition newPosition = new ChessPosition(startRow + 2, startColumn + 1);
@@ -22,8 +22,7 @@ public class KnightMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-
-        //NorthWest
+        //NorthWEST
         if (PieceMoveCalculator.moveInBounds(startRow + 2, startColumn - 1)) {
             if (PieceMoveCalculator.isValidSquare(chessBoard, startRow + 2, startColumn - 1, teamColor)) {
                 ChessPosition newPosition = new ChessPosition(startRow + 2, startColumn - 1);
@@ -31,8 +30,7 @@ public class KnightMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-
-        //EastNorth
+        //EastNORTH
         if (PieceMoveCalculator.moveInBounds(startRow + 1, startColumn + 2)) {
             if (PieceMoveCalculator.isValidSquare(chessBoard, startRow + 1, startColumn + 2, teamColor)) {
                 ChessPosition newPosition = new ChessPosition(startRow + 1, startColumn + 2);
@@ -40,8 +38,7 @@ public class KnightMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-
-        //EastSouth
+        //EastSOUTH
         if (PieceMoveCalculator.moveInBounds(startRow - 1, startColumn + 2)) {
             if (PieceMoveCalculator.isValidSquare(chessBoard, startRow - 1, startColumn + 2, teamColor)) {
                 ChessPosition newPosition = new ChessPosition(startRow - 1, startColumn + 2);
@@ -49,8 +46,7 @@ public class KnightMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-
-        //WestNorth
+        //WestNORTH
         if (PieceMoveCalculator.moveInBounds(startRow + 1, startColumn - 2)) {
             if (PieceMoveCalculator.isValidSquare(chessBoard, startRow + 1, startColumn - 2, teamColor)) {
                 ChessPosition newPosition = new ChessPosition(startRow + 1, startColumn - 2);
@@ -58,8 +54,7 @@ public class KnightMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-
-        //WestSouth
+        //WestSOUTH
         if (PieceMoveCalculator.moveInBounds(startRow - 1, startColumn - 2)) {
             if (PieceMoveCalculator.isValidSquare(chessBoard, startRow - 1, startColumn - 2, teamColor)) {
                 ChessPosition newPosition = new ChessPosition(startRow - 1, startColumn - 2);
@@ -67,8 +62,7 @@ public class KnightMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-
-        //SouthWest
+        //SouthWEST
         if (PieceMoveCalculator.moveInBounds(startRow - 2, startColumn - 1)) {
             if (PieceMoveCalculator.isValidSquare(chessBoard, startRow - 2, startColumn - 1, teamColor)) {
                 ChessPosition newPosition = new ChessPosition(startRow - 2, startColumn - 1);
@@ -76,8 +70,7 @@ public class KnightMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-
-        //SouthEast
+        //SouthEAST
         if (PieceMoveCalculator.moveInBounds(startRow - 2, startColumn + 1)) {
             if (PieceMoveCalculator.isValidSquare(chessBoard, startRow - 2, startColumn + 1, teamColor)) {
                 ChessPosition newPosition = new ChessPosition(startRow - 2, startColumn + 1);

@@ -11,8 +11,7 @@ public class RookMoveCalculator implements PieceMoveCalculator {
         int startRow = currentPosition.getRow();
         int startColumn = currentPosition.getColumn();
 
-        //Need for loop check U, D, L, R, will use for Q. Each is for loop.
-        //Up
+        //UP
         for (int i = 1; i < 8; i++) {
             if (PieceMoveCalculator.moveInBounds(startRow + i, startColumn)) {
                 if (PieceMoveCalculator.isValidSquare(chessBoard, startRow + i, startColumn, teamColor)) {
@@ -30,7 +29,7 @@ public class RookMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-        //Down
+        //DOWN
         for (int i = 1; i < 8; i++) {
             if (PieceMoveCalculator.moveInBounds(startRow - i, startColumn)) {
                 if (PieceMoveCalculator.isValidSquare(chessBoard, startRow - i, startColumn, teamColor)) {
@@ -48,7 +47,7 @@ public class RookMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-        //Left
+        //LEFT
         for (int i = 1; i < 8; i++) {
             if (PieceMoveCalculator.moveInBounds(startRow, startColumn - i)) {
                 if (PieceMoveCalculator.isValidSquare(chessBoard, startRow, startColumn - i, teamColor)) {
@@ -66,7 +65,7 @@ public class RookMoveCalculator implements PieceMoveCalculator {
             }
         }
 
-        //Right
+        //RIGHT
         for (int i = 1; i < 8; i++) {
             if (PieceMoveCalculator.moveInBounds(startRow, startColumn + i)) {
                 if (PieceMoveCalculator.isValidSquare(chessBoard, startRow, startColumn + i, teamColor)) {
@@ -83,7 +82,6 @@ public class RookMoveCalculator implements PieceMoveCalculator {
                 break;
             }
         }
-
         return moves;
     }
 }
