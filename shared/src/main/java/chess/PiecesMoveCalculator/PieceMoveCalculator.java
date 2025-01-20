@@ -6,7 +6,7 @@ import chess.*;
 public interface PieceMoveCalculator {
     public ArrayList<ChessMove> possibleMoves(ChessBoard chessBoard, ChessPosition currentPosition, ChessGame.TeamColor teamColor);
 
-        //Check if move in bounds (CAN IMPROVE)
+    //CHECK IF IN BOUNDS
     public static boolean moveInBounds(int row, int column) {
 
         if (row < 1 || column < 1) {
@@ -17,7 +17,8 @@ public interface PieceMoveCalculator {
         }
         return true;
     }
-    //If the square is able to move to
+
+    //IF SQUARE IS ELIGIBLE TO MOVE TO (not applicable for pawn)
     public static boolean isValidSquare(ChessBoard board, int row, int column, ChessGame.TeamColor teamColor) {
         // MINUS 1 FOR 0 INDEX FORM
         ChessPiece piece = board.squares[row - 1][column - 1];
@@ -45,6 +46,16 @@ public interface PieceMoveCalculator {
             return true;
         }
         else {
+            return false;
+        }
+    }
+
+    //PAWN-ONLY SQUARE LOGIC (cant move directly up or down to capture)
+    public static boolean isFreeSquare(ChessBoard board, int row, int column) {
+        ChessPiece piece = board.squares[row - 1][column - 1];
+        if (piece == null) {
+            return true;
+        } else {
             return false;
         }
     }
