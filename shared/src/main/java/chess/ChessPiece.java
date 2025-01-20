@@ -3,7 +3,6 @@ package chess;
 import chess.PiecesMoveCalculator.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -77,10 +76,10 @@ public class ChessPiece {
         if (type == PieceType.KNIGHT) {
             calculator = new KnightMoveCalculator();
         }
-        //Temp Place Holder
-        if (calculator == null) {
-            return new ArrayList<>();
+        if (type == PieceType.PAWN) {
+            calculator = new PawnMoveCalculator();
         }
+
         ChessGame.TeamColor teamColor = this.getTeamColor();
         return calculator.possibleMoves(board, myPosition, teamColor);
     }
