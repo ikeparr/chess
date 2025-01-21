@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 public class QueenMoveCalculator implements PieceMoveCalculator {
 
-    public ArrayList<ChessMove> possibleMoves(ChessBoard chessBoard, ChessPosition currentPosition, ChessGame.TeamColor teamColor) {
+    public ArrayList<ChessMove> possibleMoves(ChessBoard chessBoard,
+                                              ChessPosition currentPosition, ChessGame.TeamColor teamColor) {
         ArrayList<ChessMove> moves = new ArrayList<>();
 
         int startRow = currentPosition.getRow();
