@@ -15,10 +15,12 @@ public class PawnMoveCalculator implements PieceMoveCalculator {
             if (startRow == 2) {
                 if (PieceMoveCalculator.moveInBounds(startRow + 1, startColumn)
                         && PieceMoveCalculator.isFreeSquare(chessBoard, startRow + 1, startColumn)) {
+
                     ChessPosition newPosition = new ChessPosition(startRow + 1, startColumn);
                     moves.add(new ChessMove(currentPosition, newPosition, null));
                     if (PieceMoveCalculator.moveInBounds(startRow + 2, startColumn)
                             && PieceMoveCalculator.isFreeSquare(chessBoard, startRow + 2, startColumn)) {
+
                         ChessPosition doubleNewPosition = new ChessPosition(startRow + 2, startColumn);
                         moves.add(new ChessMove(currentPosition, doubleNewPosition, null));
                     }
@@ -31,10 +33,7 @@ public class PawnMoveCalculator implements PieceMoveCalculator {
                         && PieceMoveCalculator.isFreeSquare(chessBoard, startRow + 1, startColumn)) {
                     if (startRow + 1 == 8) {
                         ChessPosition newPosition = new ChessPosition(startRow + 1, startColumn);
-                        moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.QUEEN));
-                        moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.KNIGHT));
-                        moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.ROOK));
-                        moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.BISHOP));
+                        addPromotionPiece(moves, currentPosition, newPosition);
                     } else {
                         ChessPosition newPosition = new ChessPosition(startRow + 1, startColumn);
                         moves.add(new ChessMove(currentPosition, newPosition, null));
@@ -47,10 +46,7 @@ public class PawnMoveCalculator implements PieceMoveCalculator {
                     && PieceMoveCalculator.isOpponentSquare(chessBoard, startRow + 1, startColumn - 1, teamColor)) {
                 if (startRow + 1 == 8) {
                     ChessPosition newPosition = new ChessPosition(startRow + 1, startColumn - 1);
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.QUEEN));
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.KNIGHT));
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.ROOK));
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.BISHOP));
+                    addPromotionPiece(moves, currentPosition, newPosition);
                 } else {
                     ChessPosition newPosition = new ChessPosition(startRow + 1, startColumn - 1);
                     moves.add(new ChessMove(currentPosition, newPosition, null));
@@ -62,10 +58,7 @@ public class PawnMoveCalculator implements PieceMoveCalculator {
                     && PieceMoveCalculator.isOpponentSquare(chessBoard, startRow + 1, startColumn + 1, teamColor)) {
                 if (startRow + 1 == 8) {
                     ChessPosition newPosition = new ChessPosition(startRow + 1, startColumn + 1);
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.QUEEN));
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.KNIGHT));
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.ROOK));
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.BISHOP));
+                    addPromotionPiece(moves, currentPosition, newPosition);
                 } else {
                     ChessPosition newPosition = new ChessPosition(startRow + 1, startColumn + 1);
                     moves.add(new ChessMove(currentPosition, newPosition, null));
@@ -79,10 +72,12 @@ public class PawnMoveCalculator implements PieceMoveCalculator {
             if (startRow == 7) {
                 if (PieceMoveCalculator.moveInBounds(startRow - 1, startColumn)
                         && PieceMoveCalculator.isFreeSquare(chessBoard, startRow - 1, startColumn)) {
+
                     ChessPosition newPosition = new ChessPosition(startRow - 1, startColumn);
                     moves.add(new ChessMove(currentPosition, newPosition, null));
                     if (PieceMoveCalculator.moveInBounds(startRow - 2, startColumn)
                             && PieceMoveCalculator.isFreeSquare(chessBoard, startRow - 2, startColumn)) {
+
                         ChessPosition doubleNewPosition = new ChessPosition(startRow - 2, startColumn);
                         moves.add(new ChessMove(currentPosition, doubleNewPosition, null));
                     }
@@ -95,10 +90,7 @@ public class PawnMoveCalculator implements PieceMoveCalculator {
                         && PieceMoveCalculator.isFreeSquare(chessBoard, startRow - 1, startColumn)) {
                     if (startRow - 1 == 1) {
                         ChessPosition newPosition = new ChessPosition(startRow - 1, startColumn);
-                        moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.QUEEN));
-                        moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.KNIGHT));
-                        moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.ROOK));
-                        moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.BISHOP));
+                        addPromotionPiece(moves, currentPosition, newPosition);
                     } else {
                         ChessPosition newPosition = new ChessPosition(startRow - 1, startColumn);
                         moves.add(new ChessMove(currentPosition, newPosition, null));
@@ -111,10 +103,7 @@ public class PawnMoveCalculator implements PieceMoveCalculator {
                     && PieceMoveCalculator.isOpponentSquare(chessBoard, startRow - 1, startColumn - 1, teamColor)) {
                 if (startRow - 1 == 1) {
                     ChessPosition newPosition = new ChessPosition(startRow - 1, startColumn - 1);
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.QUEEN));
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.KNIGHT));
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.ROOK));
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.BISHOP));
+                    addPromotionPiece(moves, currentPosition, newPosition);
                 } else {
                     ChessPosition newPosition = new ChessPosition(startRow - 1, startColumn - 1);
                     moves.add(new ChessMove(currentPosition, newPosition, null));
@@ -126,10 +115,7 @@ public class PawnMoveCalculator implements PieceMoveCalculator {
                     && PieceMoveCalculator.isOpponentSquare(chessBoard, startRow - 1, startColumn + 1, teamColor)) {
                 if (startRow - 1 == 1) {
                     ChessPosition newPosition = new ChessPosition(startRow - 1, startColumn + 1);
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.QUEEN));
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.KNIGHT));
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.ROOK));
-                    moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.BISHOP));
+                    addPromotionPiece(moves, currentPosition, newPosition);
                 } else {
                     ChessPosition newPosition = new ChessPosition(startRow - 1, startColumn + 1);
                     moves.add(new ChessMove(currentPosition, newPosition, null));
