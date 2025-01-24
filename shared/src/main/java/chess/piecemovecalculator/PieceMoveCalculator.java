@@ -137,7 +137,8 @@ public interface PieceMoveCalculator {
         }
     }
 
-    default void calculateBishopMoves(ChessBoard chessBoard, ChessPosition currentPosition, ChessGame.TeamColor teamColor, ArrayList<ChessMove> moves) {
+    default void calculateBishopMoves(ChessBoard chessBoard, ChessPosition currentPosition,
+                                      ChessGame.TeamColor teamColor, ArrayList<ChessMove> moves) {
         int startRow = currentPosition.getRow();
         int startColumn = currentPosition.getColumn();
 
