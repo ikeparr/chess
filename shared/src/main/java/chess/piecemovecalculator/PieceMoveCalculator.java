@@ -214,4 +214,12 @@ public interface PieceMoveCalculator {
             }
         }
     }
+
+    //add promotion piece for Pawn (removes duplicated code)
+    default void addPromotionPiece(ArrayList<ChessMove> moves, ChessPosition currentPosition, ChessPosition newPosition) {
+        moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.QUEEN));
+        moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.KNIGHT));
+        moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.ROOK));
+        moves.add(new ChessMove(currentPosition, newPosition, ChessPiece.PieceType.BISHOP));
+    }
 }
