@@ -53,17 +53,26 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        ChessPiece piece = board.getPiece(startPosition);
         ArrayList<ChessMove> possibleMoves = this.board.getPiece(startPosition).pieceMoves(this.board, startPosition);
         ArrayList<ChessMove> validMoves = new ArrayList<>();
+        ChessPiece piece = board.getPiece(startPosition);
         for (ChessMove move : possibleMoves){
-            board.addPiece(startPosition, null);
-            board.addPiece(move.getEndPosition(), piece);
-            if (!isInCheck(piece.getTeamColor())){
+            if (isMoveOkay(piece, startPosition, move)){
                 validMoves.add(move);
             }
         }
         return validMoves;
+    }
+
+    private boolean isMoveOkay(ChessPiece piece, ChessPosition startPosition, ChessMove move){
+        ChessPiece testPiece = board.getPiece(move.getEndPosition());   //test piece placeholder to check if move okay
+        board.addPiece(startPosition, null); //remove OG piece
+        board.addPiece(move.getEndPosition(), piece);   //place OG piece in spot being checked
+        boolean isOkay = !isInCheck(piece.getTeamColor());  //returns true if not in check
+        board.addPiece(startPosition, piece);   //places OG piece to starting spot
+        board.addPiece(move.getEndPosition(), testPiece); //restores piece (or null) at endPosition to ensure OG board back
+
+        return isOkay;
     }
 
     /**
