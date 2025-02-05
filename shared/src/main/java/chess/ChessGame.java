@@ -2,7 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
+
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -83,7 +83,41 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+        ChessPiece pieceToMove = board.getPiece(move.getStartPosition());
+        if (pieceToMove == null){
+            throw new InvalidMoveException("No piece to move at start position");
+        }
+        ArrayList<ChessMove> validMoves = pieceToMove.pieceMoves(board, move.getStartPosition());
+
+        if (pieceToMove.getTeamColor() != teamTurn){
+            throw new InvalidMoveException("It is not this pieces teams turn.");
+        }
+        if (!validMoves.contains(move)){
+            throw new InvalidMoveException("Not a valid move for this piece.");
+        }
+        //CHECK IF MOVE LEAVES KING IN CHECK (similar code to checkmate)
+        ChessPiece tempPiece = board.getPiece(move.getEndPosition());
+        // Sim Move
+        board.addPiece(move.getStartPosition(), null);
+        board.addPiece(move.getEndPosition(), pieceToMove);
+        if (isInCheck(pieceToMove.getTeamColor())){
+            throw new InvalidMoveException("Still in check after making move");
+        }
+        if (move.getPromotionPiece() != null){
+            pieceToMove = new ChessPiece(pieceToMove.getTeamColor(), move.getPromotionPiece());
+        }
+        // Undo Sim
+        board.addPiece(move.getStartPosition(), pieceToMove);
+        board.addPiece(move.getEndPosition(), tempPiece);
+
+        //Actually execute move & swap turns
+        board.addPiece(move.getStartPosition(), null);
+        board.addPiece(move.getEndPosition(), pieceToMove);
+        if (teamTurn == TeamColor.WHITE){
+            teamTurn = TeamColor.BLACK;
+        } else {
+            teamTurn = TeamColor.WHITE;
+        }
     }
 
     /**
