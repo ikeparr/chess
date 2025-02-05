@@ -2,6 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -56,7 +57,7 @@ public class ChessGame {
         ArrayList<ChessMove> possibleMoves = this.board.getPiece(startPosition).pieceMoves(this.board, startPosition);
         ArrayList<ChessMove> validMoves = new ArrayList<>();
         ChessPiece piece = board.getPiece(startPosition);
-        for (ChessMove move : possibleMoves){
+        for (ChessMove move : possibleMoves){   //NOTE that : is like the 'in' in "for move in moves'
             if (isMoveOkay(piece, startPosition, move)){
                 validMoves.add(move);
             }
@@ -65,12 +66,12 @@ public class ChessGame {
     }
 
     private boolean isMoveOkay(ChessPiece piece, ChessPosition startPosition, ChessMove move){
-        ChessPiece testPiece = board.getPiece(move.getEndPosition());   //test piece placeholder to check if move okay
-        board.addPiece(startPosition, null); //remove OG piece
-        board.addPiece(move.getEndPosition(), piece);   //place OG piece in spot being checked
-        boolean isOkay = !isInCheck(piece.getTeamColor());  //returns true if not in check
-        board.addPiece(startPosition, piece);   //places OG piece to starting spot
-        board.addPiece(move.getEndPosition(), testPiece); //restores piece (or null) at endPosition to ensure OG board back
+        ChessPiece testPiece = board.getPiece(move.getEndPosition());  //test piece placeholder to check if move okay
+        board.addPiece(startPosition, null);                     //remove OG piece
+        board.addPiece(move.getEndPosition(), piece);                  //place OG piece in spot being checked
+        boolean isOkay = !isInCheck(piece.getTeamColor());             //returns true if not in check
+        board.addPiece(startPosition, piece);                          //places OG piece to starting spot
+        board.addPiece(move.getEndPosition(), testPiece);              //restores piece (or null) at endPosition to ensure OG board back
 
         return isOkay;
     }
@@ -116,8 +117,10 @@ public class ChessGame {
                     ArrayList<ChessMove> possibleMoves = pieceCauseCheckChecker.pieceMoves(board, new ChessPosition(row, col));
                     for (ChessMove possibleMove : possibleMoves){
                         ChessPosition checkingPosition = possibleMove.getEndPosition();
-                        if (checkingPosition.getRow() == kingPosition.getRow() && checkingPosition.getColumn() == kingPosition.getColumn()){
-                            return true; //King in check
+                        if (kingPosition != null && checkingPosition.getRow() == kingPosition.getRow()){
+                            if (checkingPosition.getColumn() == kingPosition.getColumn()){
+                                return true; //King in check
+                            }
                         }
                     }
                 }
@@ -133,7 +136,36 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        if (!isInCheck(teamColor)){
+            return false;
+        }
+        for (int row = 1; row <= 8; row++){
+            for (int col = 1; col <= 8; col++){
+                ChessPiece pieceCheckmateChecker = board.getPiece(new ChessPosition(row, col));
+                if (pieceCheckmateChecker == null || pieceCheckmateChecker.getTeamColor() != teamColor){
+                    continue;
+                }
+                ArrayList<ChessMove> possibleMoves = pieceCheckmateChecker.pieceMoves(board, new ChessPosition(row, col));
+                //sim moves, see if eliminates check (uses similar temp code like validMoves
+                for (ChessMove move : possibleMoves){
+                    ChessPosition startPosition = move.getStartPosition();
+                    ChessPosition endPosition = move.getEndPosition();
+                    ChessPiece tempPiece = board.getPiece(endPosition);   //Temp piece to store end position piece (or null)
+                    board.addPiece(startPosition, null);            //Remove OG piece
+                    board.addPiece(endPosition, pieceCheckmateChecker);   //Place OG piece in potential move end
+
+                    boolean stillInCheck = isInCheck(teamColor);          //works better than if(!isInCheck) loop
+
+                    board.addPiece(startPosition, pieceCheckmateChecker); //Return OG Piece
+                    board.addPiece(endPosition, tempPiece);               //return OG end position (if there was piece
+
+                    if (!stillInCheck){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -144,7 +176,24 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        if (isInCheck(teamColor)){
+            return false;
+        }
+        for (int row = 1; row <= 8; row++){
+            for (int col = 1; col <= 8; col++){
+                ChessPiece pieceChecker = board.getPiece(new ChessPosition(row, col));
+                if (pieceChecker != null){
+                    if (pieceChecker.getTeamColor() == teamColor){
+                        Collection<ChessMove> moves = validMoves(new ChessPosition(row, col));
+                        if (!moves.isEmpty()){
+                            return false;
+                        }
+                    }
+                }
+
+            }
+        }
+        return true;
     }
 
     /**
