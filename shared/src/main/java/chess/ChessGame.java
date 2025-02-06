@@ -151,10 +151,8 @@ public class ChessGame {
                     ArrayList<ChessMove> possibleMoves = pieceCauseCheckChecker.pieceMoves(board, new ChessPosition(row, col));
                     for (ChessMove possibleMove : possibleMoves){
                         ChessPosition checkingPosition = possibleMove.getEndPosition();
-                        if (kingPosition != null && checkingPosition.getRow() == kingPosition.getRow()){
-                            if (checkingPosition.getColumn() == kingPosition.getColumn()){
-                                return true; //King in check
-                            }
+                        if (kingPosition != null && checkingPosition.getRow() == kingPosition.getRow() && checkingPosition.getColumn() == kingPosition.getColumn()){
+                            return true; //king is in check
                         }
                     }
                 }
@@ -216,15 +214,12 @@ public class ChessGame {
         for (int row = 1; row <= 8; row++){
             for (int col = 1; col <= 8; col++){
                 ChessPiece pieceChecker = board.getPiece(new ChessPosition(row, col));
-                if (pieceChecker != null){
-                    if (pieceChecker.getTeamColor() == teamColor){
-                        Collection<ChessMove> moves = validMoves(new ChessPosition(row, col));
-                        if (!moves.isEmpty()){
-                            return false;
-                        }
+                if (pieceChecker != null && pieceChecker.getTeamColor() == teamColor){
+                    Collection<ChessMove> moves = validMoves(new ChessPosition(row, col));
+                    if (!moves.isEmpty()){
+                        return false;
                     }
                 }
-
             }
         }
         return true;
