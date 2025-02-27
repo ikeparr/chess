@@ -19,11 +19,15 @@ public class Server {
         //This line initializes the server and can be removed once you have a functioning endpoint 
         Spark.init();
         Spark.delete("/db", new ClearHandler(authDAO, gameDAO, userDAO));
+        Spark.post("/user", new RegisterHandler(userDAO, authDAO));
         /// YET TO BE IMPLEMENTED BELOW ///
         //Spark.delete("/session", new LogoutHandler(authDAO)::handle);
         //Spark.get("/game", new ListGamesHandler(authDAO)::handle);
         //Spark.post("/game", new CreateGameHandler( ??? )::handle);
         //Spark.put("/game", new JoinGameHandler( ??? )::handle
+
+        //This line initializes the server and can be removed once you have a functioning endpoint
+        // Spark.init();
 
         Spark.awaitInitialization();
         return Spark.port();
