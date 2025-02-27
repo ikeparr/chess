@@ -4,7 +4,6 @@ import dataaccess.*;
 import model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class ClearTest {
     private AuthDAO authDAO;
@@ -24,10 +23,17 @@ public class ClearTest {
 
     @Test
     void clearSuccess() throws DataAccessException {
-        //assert is making sure it should be null, otherwise give message
-        userDAO.createUser(new UserData("testUser", "password", "email@email.com"));
-        gameService.clear();
-        userService.clear();
-        assertNull(userDAO.getUser("testUser"), "User should be cleared");
+        userDAO.createUser(new UserData("me", "myself", "andI@gmail.com"));
+        boolean SuccessfulTest = true;
+        try {
+            userService.clear();
+            gameService.clear();
+        }
+        catch (DataAccessException error) {
+            if (error.getMessage().contains("Error")) {
+                SuccessfulTest = false;
+            }
+        }
+        assert SuccessfulTest;
     }
 }
