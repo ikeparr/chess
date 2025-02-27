@@ -22,4 +22,25 @@ public class UserService {
         userDAO.clear();
         authDAO.clear();
     }
+
+    public AuthData register(UserData user) throws DataAccessException{
+        /// Error cases
+        if (user.username() == null || user.password() == null || user.email() == null) {
+            throw new DataAccessException("bad request: null parameters");
+        }
+        if (user.username().isEmpty() || user.email().isEmpty() || user.password().isEmpty()) {
+            throw new DataAccessException("bad request: empty parameters");
+        }
+        if (userDAO.getUser(user.username()) != null) {
+            throw new DataAccessException("Username already taken");
+        }
+
+        userDAO.createUser(user);
+        String authToken = UUID.randomUUID().toString();
+        AuthData authData = new AuthData(authToken, user.username());
+        authDAO.createAuth(authData);
+
+        return authData;
+    }
+
 }
