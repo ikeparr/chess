@@ -46,4 +46,24 @@ public class UserService {
         return authData;
     }
 
+    public AuthData login(String username, String password) throws DataAccessException {
+        /// error cases
+        if (username == null || password == null) {
+            throw new DataAccessException("unauthorized, null parameters");
+        }
+        if (username.isEmpty() || password.isEmpty()) {
+            throw new DataAccessException("unauthorized, empty parameters");
+        }
+        //check if user exists and if password is right
+        UserData user = userDAO.getUser(username);
+        if (user == null || !user.password().equals(password)) {
+            throw new DataAccessException("unauthorized");
+        }
+        String authToken = UUID.randomUUID().toString();
+        AuthData authData = new AuthData(authToken, user.username());
+        authDAO.createAuth(authData);
+
+        return authData;
+    }
+
 }
