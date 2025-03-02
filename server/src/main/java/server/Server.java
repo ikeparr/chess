@@ -21,6 +21,7 @@ public class Server {
         Spark.delete("/db", new ClearHandler(authDAO, gameDAO, userDAO));
         Spark.post("/user", new RegisterHandler(userDAO, authDAO));
         Spark.post("/session", new LoginHandler(userDAO, authDAO));
+        Spark.delete("/session", new LogoutHandler(userDAO, authDAO));
         /// YET TO BE IMPLEMENTED BELOW ///
         //Spark.delete("/session", new LogoutHandler(authDAO)::handle);
         //Spark.get("/game", new ListGamesHandler(authDAO)::handle);
