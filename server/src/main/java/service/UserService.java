@@ -66,4 +66,18 @@ public class UserService {
         return authData;
     }
 
+    public void logout(String authToken) throws DataAccessException {
+        /// error cases
+        if (authToken == null || authToken.isEmpty()) {
+            throw new DataAccessException("unauthorized, authToken is null or empty");
+        }
+        //checdk if authToken exists
+        AuthData auth = authDAO.getAuth(authToken);
+        if (auth == null ) {
+            throw new DataAccessException("unauthorized");
+        }
+
+        authDAO.deleteAuth(authToken);
+    }
+
 }
