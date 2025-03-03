@@ -18,14 +18,23 @@ public class UserService {
 
     }
 
+    ///  NOTE: used in GameService so I dont have to have authDAO in there
+    public AuthData validateAuthToken(String authToken) throws DataAccessException{
+        if (authToken == null || authToken.isEmpty()){
+            throw new DataAccessException("ErrorL unauthorized, missing authToken");
+        }
+        AuthData auth = authDAO.getAuth(authToken);
+        if (auth == null){
+            throw new DataAccessException("Error: unauthorized, invalid authToken");
+        }
+        return auth;
+    }
+
     public void clear() throws DataAccessException{
         userDAO.clear();
         authDAO.clear();
     }
 
-    ///
-    /// test stuff for register *REVIEW AND ADJUST WITH SAMUEL*
-    ///
     public AuthData register(UserData user) throws DataAccessException{
         /// Error cases
         if (user.username() == null || user.password() == null || user.email() == null) {
