@@ -18,6 +18,7 @@ public class LoginHandler implements Route {
         this.loginService = new UserService(userDAO, authDAO);
     }
 
+
     public Object handle(Request req, Response resp) {
         try {
             UserData request = gson.fromJson(req.body(), UserData.class);
@@ -35,6 +36,7 @@ public class LoginHandler implements Route {
                 resp.status(401);
                 return gson.toJson(new ErrorResponse("Error: unauthorized"));
             }
+            // GENERIC ERROR
             resp.status(500);
             return gson.toJson(new ErrorResponse("Error: " + error.getMessage()));
         }
