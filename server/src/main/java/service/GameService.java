@@ -3,6 +3,8 @@ package service;
 import dataaccess.*;
 import model.GameData;
 
+import java.util.Collection;
+
 public class GameService {
     private final GameDAO gameDAO;
     private int nextGameID = 1;
@@ -31,6 +33,10 @@ public class GameService {
 
     public int generateGameID() {
         return nextGameID++;
+    }
+
+    public Collection<GameData> listGames() throws DataAccessException{
+        return gameDAO.listGames();
     }
 
 }
