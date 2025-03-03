@@ -9,7 +9,6 @@ import spark.Request;
 import com.google.gson.Gson;
 import spark.Route;
 
-
 public class LoginHandler implements Route {
     private final UserService loginService;
     private final Gson gson = new Gson();
@@ -20,13 +19,16 @@ public class LoginHandler implements Route {
 
 
     public Object handle(Request req, Response resp) {
+
         try {
+            // PARSE REQ BODY INTO USERDATA
             UserData request = gson.fromJson(req.body(), UserData.class);
             if (request == null || request.username() == null || request.password() == null){
                 resp.status(401);
                 return gson.toJson(new ErrorResponse("Error: unauthorized"));
             }
 
+            // AUTHENTICATE USER & GENERATE TOKEN
             AuthData authData = loginService.login(request.username(), request.password());
             resp.status(200);
             return gson.toJson(new SuccessResponse(authData.username(), authData.authToken()));

@@ -18,8 +18,11 @@ public class JoinGameHandler implements Route {
         this.userService = new UserService(userDAO, authDAO);
     }
 
+
     public Object handle(Request req, Response resp) {
+
         try {
+            // PARSE & authToken VALIDATION
             JoinRequest request = gson.fromJson(req.body(), JoinRequest.class);
             String authToken = req.headers("authorization");
             AuthData user = userService.validateAuthToken(authToken);
@@ -51,6 +54,7 @@ public class JoinGameHandler implements Route {
         }
     }
 
+    // DESERIALIZE JSON INPUT FOR JOINING GAME
     private record JoinRequest(String playerColor, Integer gameID) {}
     private record SuccessResponse() {}
     private record ErrorResponse(String message) {}

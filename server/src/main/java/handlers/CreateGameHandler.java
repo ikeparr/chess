@@ -19,10 +19,13 @@ public class CreateGameHandler implements Route {
         this.userService = new UserService(userDAO, authDAO);
     }
 
+
     public Object handle(Request req, Response resp) throws DataAccessException {
+
         try {
+            // PARSE BODY
             GameData request = gson.fromJson(req.body(), GameData.class);
-            //get and validate authToken before continuing
+            // GET & VALIDATE authTOKEN
             String authToken = req.headers("authorization");
             userService.validateAuthToken(authToken);
 
@@ -30,7 +33,7 @@ public class CreateGameHandler implements Route {
                 resp.status(400);
                 return gson.toJson(new ErrorResponse("Error: bad request"));
             }
-
+            // CREATE GAME & GET NEW gameID
             int gameID = createGameService.createGame(request.gameName());
             resp.status(200);
             return gson.toJson(new SuccessResponse(gameID));

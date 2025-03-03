@@ -8,7 +8,6 @@ import spark.Response;
 import spark.Request;
 import spark.Route;
 import com.google.gson.Gson;
-
 import java.util.Collection;
 
 public class ListGamesHandler implements Route {
@@ -21,8 +20,11 @@ public class ListGamesHandler implements Route {
         this.listGamesService = new GameService(gameDAO);
     }
 
+
     public Object handle(Request req, Response resp) {
+
         try {
+            // authToken VALIDATION
             String authToken = req.headers("authorization");
             userService.validateAuthToken(authToken);
             Collection<GameData> games = listGamesService.listGames();
@@ -38,7 +40,6 @@ public class ListGamesHandler implements Route {
             resp.status(500);
             return gson.toJson(new ErrorResponse("Error: " + error.getMessage()));
         }
-
     }
 
     private record SuccessResponse(Collection<GameData> games) {}

@@ -5,7 +5,6 @@ import model.*;
 import service.UserService;
 import spark.Request;
 import spark.Response;
-
 import com.google.gson.Gson;
 import spark.Route;
 
@@ -17,22 +16,22 @@ public class RegisterHandler implements Route {
         this.registerService = new UserService(userDAO, authDAO);
     }
 
-    public Object handle(Request req, Response resp) {
+
+    public Object handle(Request req, Response resp) throws DataAccessException {
 
         try {
-            //Deserialize req body
+            // DESERIALIZE REQ BODY
             UserData request = gson.fromJson(req.body(), UserData.class);
             if (request == null){
                 resp.status(400);
                 return gson.toJson(new ErrorResponse("Error, bad request"));
             }
 
+            // REGISTER AND GET authToken
             AuthData authData = registerService.register(request);
-
             resp.status(200);
             return gson.toJson(new SuccessResponse(authData.username(), authData.authToken()));
         }
-
         catch (DataAccessException error) {
             if (error.getMessage().contains("bad request")){
                 resp.status(400);
@@ -42,11 +41,12 @@ public class RegisterHandler implements Route {
                 resp.status(403);
                 return gson.toJson(new ErrorResponse("Error, username already taken"));
             }
-            //if not previous 2 errors, then error500 (generic error) aka nonspecific
+            // GENERIC ERROR
             resp.status(500);
             return gson.toJson(new ErrorResponse("Unexpected Error, " + error.getMessage()));
         }
     }
+
     private record ErrorResponse(String message) {}
     private record SuccessResponse(String username, String authToken) {}
 }

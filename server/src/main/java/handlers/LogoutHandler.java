@@ -19,6 +19,7 @@ public class LogoutHandler implements Route {
 
 
     public Object handle(Request req, Response resp) {
+
         try {
             /// NOTE: grabs HEADER, not BODY. (deletes usually don't have body)
             String authToken = req.headers("authorization");

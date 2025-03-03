@@ -17,6 +17,7 @@ public class ClearHandler implements Route {
         this.userService = new UserService(userDAO, authDAO);
     }
 
+
     public Object handle(Request req, Response resp) throws DataAccessException {
 
         try {
@@ -25,13 +26,13 @@ public class ClearHandler implements Route {
             resp.status(200);
             return gson.toJson(new SuccessResponse());
         }
-
         catch (DataAccessException error){
             resp.status(500);
             return gson.toJson(new ErrorResponse("Error: " + error.getMessage()));
         }
     }
 
+    // serializes to empty JSON object
     private record SuccessResponse() {}
     private record ErrorResponse(String message) {}
 }
