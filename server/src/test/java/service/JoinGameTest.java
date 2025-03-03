@@ -21,14 +21,14 @@ public class JoinGameTest {
         GameData game = new GameData(123, null, null, "GoodGame", null);
         gameDAO.createGame(game);
 
-        boolean SuccessfulTest = true;
+        boolean successfulTest = true;
         try {
             joinGameService.joinGame("me", "WHITE", 123);
         }
         catch (DataAccessException error) {
-            SuccessfulTest = false;
+            successfulTest = false;
         }
-        assert SuccessfulTest;
+        assert successfulTest;
     }
 
 
@@ -37,14 +37,14 @@ public class JoinGameTest {
         GameData game = new GameData(123, null, "takenSpot", "FailGame", null);
         gameDAO.createGame(game);
 
-        boolean FailTest = false;
+        boolean failTest = false;
         try {
             joinGameService.joinGame("me", "BLACK", 123);
         }
         catch (DataAccessException error) {
-            FailTest = true;
+            failTest = true;
         }
-        assert FailTest;
+        assert failTest;
     }
 }
 

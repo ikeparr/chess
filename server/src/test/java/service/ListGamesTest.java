@@ -22,30 +22,30 @@ public class ListGamesTest {
     void listGamesSuccessful() throws DataAccessException{
         GameData testGame = new GameData(1, null, null, "testGame", null);
         gameDAO.createGame(testGame);
-        boolean SuccessfulTest = true;
+        boolean successfulTest = true;
 
         try {
             listGameService.listGames();
         }
         catch (DataAccessException error){
-            SuccessfulTest = false;
+            successfulTest = false;
         }
-        assert SuccessfulTest;
+        assert successfulTest;
     }
 
 
     @Test
     void listGamesEmpty() throws DataAccessException{
-        boolean SuccessfulListing = true;
+        boolean successfulListing = true;
         Collection<GameData> games = null;
         try {
             games = listGameService.listGames();
         }
         catch (DataAccessException error) {
-            SuccessfulListing = false;
+            successfulListing = false;
         }
         //asserts if the result is empty which isn't preferred. cannot be null due to hashmap
-        assert SuccessfulListing;
+        assert successfulListing;
         assertNotNull(games, "games should not be null");
         assertEquals(0, games.size(), "should return 0 games when empty");
     }

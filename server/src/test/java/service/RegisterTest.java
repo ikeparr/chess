@@ -5,7 +5,6 @@ import model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 public class RegisterTest {
     private UserDAO userDAO;
     private AuthDAO authDAO;
@@ -18,34 +17,36 @@ public class RegisterTest {
         registerService = new UserService(userDAO, authDAO);
     }
 
+
     @Test
     void registerSuccessful() throws DataAccessException {
         UserData user = new UserData("me", "myself", "andI@gmail.com");
-        boolean SuccessfulTest = true;
+        boolean successfulTest = true;
         try {
             AuthData auth = registerService.register(user);
         }
         catch (DataAccessException error) {
             if (error.getMessage().contains("bad request") || error.getMessage().contains("Username already taken")) {
-                SuccessfulTest = false;
+                successfulTest = false;
             }
         }
-        assert SuccessfulTest;
+        assert successfulTest;
     }
+
 
     @Test
     void registerUnsuccessfulNulls() throws DataAccessException {
         UserData user = new UserData(null, "myself", "andI@gmail.com");
-        boolean NullErrorTest = false;
+        boolean nullErrorTest = false;
         try {
             AuthData auth = registerService.register(user);
         }
         catch (DataAccessException error) {
             if (error.getMessage().contains("bad request")) {
-                NullErrorTest = true;
+                nullErrorTest = true;
             }
         }
-        assert NullErrorTest;
+        assert nullErrorTest;
     }
 }
 

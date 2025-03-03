@@ -21,19 +21,20 @@ public class ClearTest {
         userService = new UserService(userDAO, authDAO);
     }
 
+
     @Test
     void clearSuccess() throws DataAccessException {
         userDAO.createUser(new UserData("me", "myself", "andI@gmail.com"));
-        boolean SuccessfulTest = true;
+        boolean successfulTest = true;
         try {
             userService.clear();
             gameService.clear();
         }
         catch (DataAccessException error) {
             if (error.getMessage().contains("Error")) {
-                SuccessfulTest = false;
+                successfulTest = false;
             }
         }
-        assert SuccessfulTest;
+        assert successfulTest;
     }
 }

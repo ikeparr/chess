@@ -2,7 +2,6 @@ package service;
 
 import dataaccess.*;
 import model.AuthData;
-import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,29 +16,31 @@ public class LogoutTest {
         logOutService = new UserService(userDAO, authDAO);
     }
 
+
     @Test
     void logOutSuccessful() throws DataAccessException {
         AuthData auth = new AuthData("testToken", "bob");
-        boolean SuccessfulTest = true;
+        boolean successfulTest = true;
         authDAO.createAuth(auth);
         try {
             logOutService.logout(auth.authToken());
         }
         catch (DataAccessException error) {
-            SuccessfulTest = false;
+            successfulTest = false;
         }
-        assert SuccessfulTest;
+        assert successfulTest;
     }
+
 
     @Test
     void logOutUnsuccessful() throws DataAccessException {
-        boolean SuccessfulTest = false;
+        boolean successfulTest = false;
         try {
             logOutService.logout("invalidToken");
         }
         catch (DataAccessException error) {
-            SuccessfulTest = true;
+            successfulTest = true;
         }
-        assert SuccessfulTest;
+        assert successfulTest;
     }
 }

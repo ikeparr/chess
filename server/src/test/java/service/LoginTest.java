@@ -17,45 +17,48 @@ public class LoginTest {
         loginService = new UserService(userDAO, authDAO);
     }
 
+
     @Test
     void loginSuccessful() throws DataAccessException {
         UserData user = new UserData("me", "myself", "andI@gmail.com" );
-        boolean SuccessfulTest = true;
+        boolean successfulTest = true;
         userDAO.createUser(user);
         try {
             AuthData auth = loginService.login(user.username(), user.password());
         }
         catch (DataAccessException error) {
-            SuccessfulTest = false;
+            successfulTest = false;
         }
-        assert SuccessfulTest;
+        assert successfulTest;
     }
+
 
     @Test
     void loginFailPassword() throws DataAccessException {
         UserData user = new UserData("me", "myself", "andI@gmail.com" );
-        boolean SuccessfulTest = false;
+        boolean successfulTest = false;
         userDAO.createUser(user);
         try {
             AuthData auth = loginService.login(user.username(), "notUserPassword");
         }
         catch (DataAccessException error) {
-            SuccessfulTest = true;
+            successfulTest = true;
         }
-        assert SuccessfulTest;
+        assert successfulTest;
     }
+
 
     @Test
     void loginFailUsername() throws DataAccessException {
         UserData user = new UserData("me", "myself", "andI@gmail.com" );
-        boolean SuccessfulTest = false;
+        boolean successfulTest = false;
         userDAO.createUser(user);
         try {
             AuthData auth = loginService.login("notUsername", user.password());
         }
         catch (DataAccessException error) {
-            SuccessfulTest = true;
+            successfulTest = true;
         }
-        assert SuccessfulTest;
+        assert successfulTest;
     }
 }

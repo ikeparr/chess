@@ -17,27 +17,27 @@ public class CreateGameTest {
 
     @Test
     void createGameSuccess() throws DataAccessException {
-        boolean SuccessfulTest = true;
+        boolean successfulTest = true;
         try {
             createGameService.createGame("TestGameName");
         }
         catch (DataAccessException error) {
-            SuccessfulTest = false;
+            successfulTest = false;
         }
-        assert SuccessfulTest;
+        assert successfulTest;
     }
 
 
     @Test
     void createGameMissingName() throws DataAccessException {
-        boolean MissingNameTest = false;
+        boolean missingNameTest = false;
         try {
             createGameService.createGame(null);
         }
         catch (DataAccessException error) {
-            MissingNameTest = true;
+            missingNameTest = true;
         }
-        assert MissingNameTest;
+        assert missingNameTest;
     }
 
 }
