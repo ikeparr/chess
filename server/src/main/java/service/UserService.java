@@ -3,11 +3,9 @@ package service;
 import dataaccess.*;
 import model.AuthData;
 import model.UserData;
-
 import java.util.UUID;
 
 public class UserService {
-
     /// NOTE: AuthService merged into UserService, they're both used together a lot ///
     private final UserDAO userDAO;
     private final AuthDAO authDAO;
@@ -30,13 +28,15 @@ public class UserService {
         return auth;
     }
 
+
     public void clear() throws DataAccessException{
         userDAO.clear();
         authDAO.clear();
     }
 
+
     public AuthData register(UserData user) throws DataAccessException{
-        /// Error cases
+        // VALIDATE INPUTS
         if (user.username() == null || user.password() == null || user.email() == null) {
             throw new DataAccessException("bad request: null parameters");
         }
@@ -50,20 +50,22 @@ public class UserService {
         userDAO.createUser(user);
         String authToken = UUID.randomUUID().toString();
         AuthData authData = new AuthData(authToken, user.username());
+        // STORES authToken
         authDAO.createAuth(authData);
 
         return authData;
     }
 
+
     public AuthData login(String username, String password) throws DataAccessException {
-        /// error cases
+        // VALIDATE INPUTS
         if (username == null || password == null) {
             throw new DataAccessException("unauthorized, null parameters");
         }
         if (username.isEmpty() || password.isEmpty()) {
             throw new DataAccessException("unauthorized, empty parameters");
         }
-        //check if user exists and if password is right
+        // VERIFY CREDENTIALS
         UserData user = userDAO.getUser(username);
         if (user == null || !user.password().equals(password)) {
             throw new DataAccessException("unauthorized");
@@ -75,12 +77,13 @@ public class UserService {
         return authData;
     }
 
+
     public void logout(String authToken) throws DataAccessException {
-        /// error cases
+        // VALIDATE INPUTS
         if (authToken == null || authToken.isEmpty()) {
             throw new DataAccessException("unauthorized, authToken is null or empty");
         }
-        //checdk if authToken exists
+        // CHECK IF authToken EXISTS
         AuthData auth = authDAO.getAuth(authToken);
         if (auth == null ) {
             throw new DataAccessException("unauthorized");
@@ -88,5 +91,4 @@ public class UserService {
 
         authDAO.deleteAuth(authToken);
     }
-
 }

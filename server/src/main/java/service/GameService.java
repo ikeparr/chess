@@ -2,7 +2,6 @@ package service;
 
 import dataaccess.*;
 import model.GameData;
-
 import java.util.Collection;
 
 public class GameService {
@@ -20,7 +19,7 @@ public class GameService {
 
 
     public int createGame(String gameName) throws DataAccessException{
-        //validate auth
+        // VERIFY gameName
         if (gameName == null || gameName.isEmpty()) {
                 throw new DataAccessException("bad request");
         }
