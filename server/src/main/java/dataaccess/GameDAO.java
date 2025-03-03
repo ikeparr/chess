@@ -9,6 +9,5 @@ public interface GameDAO {
     GameData getGame(int gameID) throws DataAccessException;
     /// NOTE: Collections are similar to maps i think
     Collection<GameData> listGames() throws DataAccessException;
-    void updateGame(GameData game) throws DataAccessException;
     void clear() throws DataAccessException;
 }

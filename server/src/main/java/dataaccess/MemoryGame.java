@@ -13,11 +13,6 @@ public class MemoryGame implements GameDAO {
         games.clear();
     }
 
-
-    public void updateGame(GameData game) throws DataAccessException {
-
-    }
-
     public void createGame(GameData game) throws DataAccessException{
         games.put(game.gameID(), game);
     }
