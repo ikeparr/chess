@@ -50,14 +50,41 @@ public class SQLUser implements UserDAO {
     }
 
 
-    /// creates the test tables ///
+    // executes given changes to DB //
+    private int executeUpdate(String statement, Object... params) throws DataAccessException {
+        try (var conn = DatabaseManager.getConnection()) {
+            try (var ps = conn.prepareStatement(statement)) {
+                for (var i = 0; i < params.length; i++) {
+                    var param = params[i];
+                    if (param instanceof String) {
+                        ps.setString(i + 1, (String) param);
+                    }
+                    else if (param instanceof Integer) {
+                        ps.setInt(i + 1, (Integer) param);
+                    }
+                    else if (param == null) {
+                        ps.setNull(i + 1, NULL);
+                    }
+                }
+                ps.executeUpdate();
+
+                return 0;
+            }
+        }
+        catch (SQLException ex) {
+            throw new DataAccessException("Error, could not execute update");
+        }
+    }
+
+
+    // creates the tables //
     private final String[] createStatements = {
             """
             CREATE TABLE IF NOT EXISTS users (
                 username VARCHAR(256) UNIQUE NOT NULL,
                 hashed_password VARCHAR(256) NOT NULL,
                 email VARCHAR(256) UNIQUE NOT NULL,
-                PRIMARY KEY (user),
+                PRIMARY KEY (username),
                 INDEX(hashed_password),
                 INDEX(email)
             )
@@ -65,7 +92,7 @@ public class SQLUser implements UserDAO {
     };
 
 
-    ///  configures database by creating DB and inserting above tables ///
+    //  configures database by creating DB and inserting above tables //
     private void configureDatabase() throws DataAccessException {
         DatabaseManager.createDatabase();
         try (var conn = DatabaseManager.getConnection()) {
