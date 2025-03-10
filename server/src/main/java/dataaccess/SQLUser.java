@@ -3,6 +3,7 @@ package dataaccess;
 import model.*;
 import java.sql.*;
 import static java.sql.Types.NULL;
+import org.mindrot.jbcrypt.BCrypt;
 
 
 public class SQLUser implements UserDAO {
@@ -12,8 +13,13 @@ public class SQLUser implements UserDAO {
     }
 
     public void clear() throws DataAccessException {
-        var statement = "TRUNCATE users";
-        executeUpdate(statement);
+        try (var conn = DatabaseManager.getConnection()) {
+            var statement = "TRUNCATE users";
+            executeUpdate(statement);
+        }
+        catch (SQLException ex) {
+            throw new DataAccessException("Error: couldn't clear DB");
+        }
     }
 
     public void createUser(UserData user) throws DataAccessException {
