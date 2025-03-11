@@ -50,11 +50,13 @@ public class SQLUser implements UserDAO {
             try (var ps = conn.prepareStatement(statement)) {
                 ps.setString(1, username);
                 try (var results = ps.executeQuery()) {
-                    results.next();
-                    results.getString("username");
-                    var password = results.getString("hashed_password");
-                    var email = results.getString("email");
-                    return new UserData(username, password, email);
+                    if (results.next()) {
+                        String db_username = results.getString("username");
+                        String hashed_password = results.getString("hashed_password");
+                        String email = results.getString("email");
+                        return new UserData(db_username, hashed_password, email);
+                    }
+                    return null; //This means user not found
                 }
             }
         }
