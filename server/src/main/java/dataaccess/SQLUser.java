@@ -23,11 +23,21 @@ public class SQLUser implements UserDAO {
     }
 
     public void createUser(UserData user) throws DataAccessException {
-//        String hashedPassword = BCrypt.hasw(user.password(), BCrypt.gensalt());
-        //TRY TO GET STUPID BCRYPT TO WORK AGAIN
-
-        var statement = "INSERT INTO users (username, hashed_password, email) VALUES (?,?,?)";
-        executeUpdate(statement, user.username(), user.password(), user.email());
+        try (var conn = DatabaseManager.getConnection()) {
+            var statement = "INSERT INTO users (username, hashed_password, email) VALUES (?,?,?)";
+            try (var ps = conn.prepareStatement(statement)) {
+                String hashed_password = BCrypt.hashpw(user.password(), BCrypt.gensalt());
+                ps.setString(1, user.username());
+                ps.setString(2, hashed_password);
+                ps.setString(3, user.email());
+                ps.executeUpdate();
+            }
+        }
+        catch (SQLException ex) {
+            if (ex.getMessage().contains("Duplicate entry")) {
+                throw new DataAccessException("User already exists: " + user.username());
+            }
+        }
     }
 
     public UserData getUser(String username) throws DataAccessException {
