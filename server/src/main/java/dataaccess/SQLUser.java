@@ -8,8 +8,12 @@ import org.mindrot.jbcrypt.BCrypt;
 
 public class SQLUser implements UserDAO {
 
-    public SQLUser() throws DataAccessException {
-        configureDatabase();
+    public SQLUser() {
+        try {
+            configureDatabase();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void clear() throws DataAccessException {
