@@ -18,7 +18,7 @@ public class SQLUser implements UserDAO {
 
     public void clear() throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
-            var statement = "TRUNCATE users";
+            var statement = "DELETE FROM users";
             executeUpdate(statement);
         }
         catch (SQLException ex) {
