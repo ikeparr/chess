@@ -23,4 +23,7 @@ public class MemoryGame implements GameDAO {
     public Collection<GameData> listGames() throws DataAccessException{
         return games.values();
     }
+    public void updateGame(GameData game) throws DataAccessException {
+
+    }
 }
