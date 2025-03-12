@@ -50,6 +50,39 @@ public class SQLGameTests {
         }
         assert failTest;
     }
+
+
+    /// GET GAME TESTS ///
+    @Test
+    void getGameSuccessful() throws DataAccessException {
+        GameData game = new GameData(123, null, null, "getGameName", new ChessGame());
+        sqlGame.createGame(game);
+        boolean successfulTest = true;
+        GameData result = null;
+        try {
+            result = sqlGame.getGame(123);
+        }
+        catch (DataAccessException error) {
+            successfulTest = false;
+        }
+        assert successfulTest;
+        assert result != null;
+    }
+    @Test
+    void getGameFail() throws DataAccessException {
+        boolean failTest = false;
+        GameData results = null;
+        try {
+            results = sqlGame.getGame(456);
+            if (results != null) {
+                failTest = true;
+            }
+        }
+        catch (DataAccessException error) {
+            failTest = true;
+        }
+        assert !failTest;
+    }
     @Test
     void clearSuccessful() throws DataAccessException {
         GameData game = new GameData(999, null, null, "clearGame", new ChessGame());
