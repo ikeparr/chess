@@ -78,4 +78,54 @@ public class SQLAuth implements AuthDAO {
     }
 
 
+
+    private final String[] createAuthStatements = {
+            """
+            CREATE TABLE IF NOT EXISTS auths (
+                authToken VARCHAR(256),
+                username VARCHAR(256) NOT NULL,
+                PRIMARY KEY (authToken)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+            """
+    };
+
+
+
+    private void configureAuthDatabase() throws DataAccessException {
+        DatabaseManager.createDatabase();
+        try (var conn = DatabaseManager.getConnection()) {
+            for (var statement : createAuthStatements) {
+                try (var ps = conn.prepareStatement(statement)) {
+                    ps.executeUpdate();
+                }
+            }
+        }
+        catch (SQLException ex) {
+            throw new DataAccessException("Error: unable to configure auth database: " + ex.getMessage());
+        }
+    }
+
+
+
+    private int executeUpdate(String statement, Object... params) throws DataAccessException {
+        try(var conn = DatabaseManager.getConnection(); var ps = conn.prepareStatement(statement)) {
+            for (var i = 0; i < params.length; i++) {
+                var param = params[i];
+                if (param instanceof Integer) {
+                    ps.setInt(i + 1, (Integer) param);
+                }
+                else if (param instanceof String) {
+                    ps.setString(i + 1, (String) param);
+                }
+                else if (param == null) {
+                    ps.setNull(i + 1, NULL);
+                }
+            }
+            ps.executeUpdate();
+            return 0;
+        }
+        catch (SQLException ex) {
+            throw new DataAccessException("Error: could not execute update");
+        }
+    }
 }
