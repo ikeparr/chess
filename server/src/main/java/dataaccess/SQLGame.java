@@ -77,6 +77,39 @@ public class SQLGame implements GameDAO {
         catch (SQLException ex) {
             throw new DataAccessException("Error getting game: " + ex.getMessage());
 
+        }
+    }
+
+
+    public void updateGame(GameData game) throws DataAccessException {
+        String statement = "REPLACE INTO games (gameID, whiteUsername, blackUsername, gameName, gameStatus) VALUES (?,?,?,?,?)";
+        executeUpdate(statement, game.gameID(), game.whiteUsername(), game.blackUsername(), game.gameName(), gson.toJson(game.game()));
+    }
+
+    public Collection<GameData> listGames() throws DataAccessException {
+        try (var conn = DatabaseManager.getConnection()) {
+            Collection<GameData> games = new ArrayList<>();
+            var statement = "SELECT gameID, whiteUsername, blackUsername, gameName, gameStatus FROM games";
+            try (var ps = conn.prepareStatement(statement); var results = ps.executeQuery()) {
+                while (results.next()) {
+                    int gameID = results.getInt("gameID");
+                    String whiteUsername = results.getString("whiteUsername");
+                    String blackUsername = results.getString("blackUsername");
+                    String gameName = results.getString("gameName");
+                    String gameStatus = results.getString("gameStatus");
+                    ChessGame gameObj = gson.fromJson(gameStatus, ChessGame.class);
+                    games.add(new GameData(gameID, whiteUsername, blackUsername, gameName, gameObj));
+                }
+                return games;
+            }
+        }
+        catch (SQLException ex) {
+            throw new DataAccessException("Error listing games: " + ex.getMessage());
+        }
+    }
+
+
+    // Execute changes to table
     private int executeUpdate(String statement, Object... params) throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
             try (var ps = conn.prepareStatement(statement)) {
