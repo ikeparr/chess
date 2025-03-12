@@ -31,5 +31,36 @@ public class SQLUserTests {
         assert "testUser".equals(result.username());
         assert "test@email.com".equals(result.email());
     }
+    @Test
+    void createUserFail() throws DataAccessException {
+        UserData user = new UserData("failUser", "failPassword", "fail@email.com");
+        sqlUser.createUser(user);
+        boolean failTest = false;
+        try {
+            sqlUser.createUser(user);
+        }
+        catch (DataAccessException error) {
+            failTest = true;
+        }
+        assert failTest;
+    }
 
+
+    /// GET USER TESTS ///
+    @Test
+    void getUserSuccessful() throws DataAccessException {
+        UserData user = new UserData("getUser", "getPassword", "getUser@email.com");
+        sqlUser.createUser(user);
+        boolean successfulTest = true;
+        UserData result = null;
+        try {
+            result = sqlUser.getUser("getUser");
+        }
+        catch (DataAccessException error) {
+            successfulTest = false;
+        }
+        assert successfulTest;
+        assert result != null;
+        assert "getUser".equals(result.username());
+    }
 }
