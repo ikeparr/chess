@@ -76,6 +76,6 @@ public class GameService {
         else {
             updateGame = new GameData(game.gameID(), game.whiteUsername(), username, game.gameName(), game.game());
         }
-        gameDAO.createGame(updateGame);
+        gameDAO.updateGame(updateGame);
     }
 }
