@@ -118,6 +118,7 @@ public class SQLGame implements GameDAO {
             )
             """
     };
+
     // configures database by creating DB and inserting above tables //
     private void configureDatabase() throws DataAccessException {
         DatabaseManager.createDatabase();
