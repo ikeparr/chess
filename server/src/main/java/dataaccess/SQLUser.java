@@ -11,8 +11,8 @@ public class SQLUser implements UserDAO {
     public SQLUser() {
         try {
             configureUserDatabase();
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+        } catch (DataAccessException error) {
+            throw new RuntimeException(error);
         }
     }
 
