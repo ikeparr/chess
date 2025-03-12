@@ -144,10 +144,7 @@ public class SQLGame implements GameDAO {
                 blackUsername VARCHAR(256) NULL,
                 gameName VARCHAR(256) UNIQUE NOT NULL,
                 gameStatus TEXT NOT NULL,
-                PRIMARY KEY (gameID),
-                FOREIGN KEY (whiteUsername) REFERENCES users(username),
-                FOREIGN KEY (blackUsername) REFERENCES users(username),
-                INDEX(gameName)
+                PRIMARY KEY (gameID)
             )
             """
     };
