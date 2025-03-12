@@ -10,7 +10,7 @@ public class SQLUser implements UserDAO {
 
     public SQLUser() {
         try {
-            configureDatabase();
+            configureUserDatabase();
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
@@ -22,7 +22,7 @@ public class SQLUser implements UserDAO {
             executeUpdate(statement);
         }
         catch (SQLException ex) {
-            throw new DataAccessException("Error: couldn't clear DB");
+            throw new DataAccessException("Error: couldn't clear user table: " +ex.getMessage());
         }
     }
 
@@ -88,7 +88,7 @@ public class SQLUser implements UserDAO {
             }
         }
         catch (SQLException ex) {
-            throw new DataAccessException("Error, could not execute update");
+            throw new DataAccessException("Error, could not execute update " + ex.getMessage());
         }
     }
 
@@ -109,7 +109,7 @@ public class SQLUser implements UserDAO {
 
 
     //  configures database by creating DB and inserting above tables //
-    private void configureDatabase() throws DataAccessException {
+    private void configureUserDatabase() throws DataAccessException {
         DatabaseManager.createDatabase();
         try (var conn = DatabaseManager.getConnection()) {
             for (var statement : createStatements) {
