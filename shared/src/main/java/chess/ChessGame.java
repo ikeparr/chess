@@ -57,7 +57,7 @@ public class ChessGame {
         ArrayList<ChessMove> possibleMoves = this.board.getPiece(startPosition).pieceMoves(this.board, startPosition);
         ArrayList<ChessMove> validMoves = new ArrayList<>();
         ChessPiece piece = board.getPiece(startPosition);
-        for (ChessMove move : possibleMoves){   //NOTE that : is like the 'in' in "for move in moves'
+        for (ChessMove move : possibleMoves){   //NOTE that : is like the 'in' in for move in moves
             if (isMoveOkay(piece, startPosition, move)){
                 validMoves.add(move);
             }
@@ -75,7 +75,6 @@ public class ChessGame {
 
         return isOkay;
     }
-
     /**
      * Makes a move in a chess game
      *
@@ -88,7 +87,6 @@ public class ChessGame {
             throw new InvalidMoveException("No piece to move at start position");
         }
         ArrayList<ChessMove> validMoves = pieceToMove.pieceMoves(board, move.getStartPosition());
-
         if (pieceToMove.getTeamColor() != teamTurn){
             throw new InvalidMoveException("It is not this pieces teams turn.");
         }
@@ -109,7 +107,6 @@ public class ChessGame {
         // Undo Sim
         board.addPiece(move.getStartPosition(), pieceToMove);
         board.addPiece(move.getEndPosition(), tempPiece);
-
         //Actually execute move & swap turns
         board.addPiece(move.getStartPosition(), null);
         board.addPiece(move.getEndPosition(), pieceToMove);
@@ -147,7 +144,6 @@ public class ChessGame {
                 if (pieceCauseCheckChecker == null || pieceCauseCheckChecker.getTeamColor() == teamColor){
                     continue;
                 }
-
                 ArrayList<ChessMove> possibleMoves = pieceCauseCheckChecker.pieceMoves(board, new ChessPosition(row, col));
                 for (ChessMove possibleMove : possibleMoves){
                     ChessPosition checkingPosition = possibleMove.getEndPosition();
@@ -180,17 +176,12 @@ public class ChessGame {
                 ArrayList<ChessMove> possibleMoves = pieceCheckmateChecker.pieceMoves(board, new ChessPosition(row, col));
                 //sim moves, see if eliminates check (uses similar temp code like validMoves
                 for (ChessMove move : possibleMoves){
-                    ChessPosition startPosition = move.getStartPosition();
-                    ChessPosition endPosition = move.getEndPosition();
-                    ChessPiece tempPiece = board.getPiece(endPosition);   //Temp piece to store end position piece (or null)
-                    board.addPiece(startPosition, null);            //Remove OG piece
-                    board.addPiece(endPosition, pieceCheckmateChecker);   //Place OG piece in potential move end
-
-                    boolean stillInCheck = isInCheck(teamColor);          //works better than if(!isInCheck) loop
-
-                    board.addPiece(startPosition, pieceCheckmateChecker); //Return OG Piece
-                    board.addPiece(endPosition, tempPiece);               //return OG end position (if there was piece
-
+                    ChessPiece tempPiece = board.getPiece(move.getEndPosition());   //Temp piece to store end position piece (or null)
+                    board.addPiece(move.getStartPosition(), null);            //Remove OG piece
+                    board.addPiece(move.getEndPosition(), pieceCheckmateChecker);   //Place OG piece in potential move end
+                    boolean stillInCheck = isInCheck(teamColor);                    //works better than if(!isInCheck) loop
+                    board.addPiece(move.getStartPosition(), pieceCheckmateChecker); //Return OG Piece
+                    board.addPiece(move.getEndPosition(), tempPiece);               //return OG end position (if there was piece
                     if (!stillInCheck){
                         return false;
                     }
