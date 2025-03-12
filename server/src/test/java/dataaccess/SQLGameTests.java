@@ -38,6 +38,19 @@ public class SQLGameTests {
         assert result != null;
     }
     @Test
+    void createGameFail() throws DataAccessException {
+        GameData game = new GameData(4567, null, null, "failGame", new ChessGame());
+        sqlGame.createGame(game);
+        boolean failTest = false;
+        try {
+            sqlGame.createGame(game);
+        }
+        catch (DataAccessException error) {
+            failTest = true;
+        }
+        assert failTest;
+    }
+    @Test
     void clearSuccessful() throws DataAccessException {
         GameData game = new GameData(999, null, null, "clearGame", new ChessGame());
         sqlGame.createGame(game);
