@@ -150,6 +150,7 @@ public class SQLGameTests {
     }
 
 
+
     /// CLEAR TEST ///
     @Test
     void clearSuccessful() throws DataAccessException {
