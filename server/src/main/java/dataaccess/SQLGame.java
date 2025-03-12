@@ -25,7 +25,7 @@ public class SQLGame implements GameDAO {
 
     public void clear() throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
-            var statement = "TRUNCATE games";
+            var statement = "DELETE FROM games";
             executeUpdate(statement);
         }
         catch (SQLException ex) {
