@@ -63,4 +63,39 @@ public class SQLUserTests {
         assert result != null;
         assert "getUser".equals(result.username());
     }
+    @Test
+    void getUserFail() throws DataAccessException {
+        boolean failTest = false;
+        UserData result = null;
+        try {
+            result = sqlUser.getUser("getUser2");
+            if (result != null) {
+                failTest = true;
+            }
+        }
+        catch (DataAccessException error) {
+            failTest = true;
+        }
+        assert !failTest;
+    }
+
+
+    /// CLEAR TEST ///
+    @Test
+    void clearSuccessful() throws DataAccessException {
+        UserData user = new UserData("testUser", "testPassword", "test@email.com");
+        sqlUser.createUser(user);
+
+        boolean successfulTest = true;
+        try {
+            sqlUser.clear();
+        } catch (DataAccessException error) {
+            successfulTest = false;
+        }
+        assert successfulTest;
+
+        // Verify the table is empty
+        UserData retrieved = sqlUser.getUser("testUser");
+        assert retrieved == null;
+    }
 }
