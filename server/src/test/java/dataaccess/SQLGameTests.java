@@ -83,6 +83,40 @@ public class SQLGameTests {
         }
         assert !failTest;
     }
+
+
+    /// LIST GAMES TESTS ///
+    @Test
+    void listGamesSuccessful() throws DataAccessException {
+        GameData game1 = new GameData(12, null, null, "game1", new ChessGame());
+        GameData game2 = new GameData(21, null, null, "game2", new ChessGame());
+        sqlGame.createGame(game1);
+        sqlGame.createGame(game2);
+        boolean successfulTest = true;
+        Collection<GameData> result = null;
+        try {
+            result = sqlGame.listGames();
+        }
+        catch (DataAccessException error) {
+            successfulTest = false;
+        }
+        assert successfulTest;
+        assert result != null;
+    }
+    @Test
+    void listGamesEmpty() throws DataAccessException {
+        boolean successfulTest = true;
+        Collection<GameData> result = null;
+        try {
+            result = sqlGame.listGames();
+        }
+        catch (DataAccessException error) {
+            successfulTest = false;
+        }
+        assert successfulTest;
+        assert result.isEmpty();
+    }
+
     @Test
     void clearSuccessful() throws DataAccessException {
         GameData game = new GameData(999, null, null, "clearGame", new ChessGame());
