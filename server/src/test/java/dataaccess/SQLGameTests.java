@@ -117,6 +117,40 @@ public class SQLGameTests {
         assert result.isEmpty();
     }
 
+
+    /// UPDATE GAME TESTS ///
+    @Test
+    void updateGameSuccessful() throws DataAccessException {
+        GameData game = new GameData(1776, null, null, "updateGame", new ChessGame());
+        sqlGame.createGame(game);
+        sqlUser.createUser(new UserData("LebronJames23", "password", "lbj23@gmail.com"));
+        boolean successfulTest = true;
+        try {
+            sqlGame.updateGame(new GameData(1776, "LebronJames23", null, "updateGame", game.game()));
+        }
+        catch (DataAccessException error) {
+            successfulTest = false;
+        }
+        assert successfulTest;
+        GameData result = sqlGame.getGame(1776);
+        assert "LebronJames23".equals(result.whiteUsername());
+    }
+    @Test
+    void updateGameFail() throws DataAccessException {
+        GameData game = new GameData(1897, null, null, "failGame", new ChessGame());
+        sqlGame.updateGame(game);
+        boolean failTest = false;
+        try {
+            sqlGame.updateGame(new GameData(1897, "nonexistentUsername", null, "failGame", game.game()));
+        }
+        catch (DataAccessException error) {
+            failTest = true;
+        }
+        assert failTest;
+    }
+
+
+    /// CLEAR TEST ///
     @Test
     void clearSuccessful() throws DataAccessException {
         GameData game = new GameData(999, null, null, "clearGame", new ChessGame());
