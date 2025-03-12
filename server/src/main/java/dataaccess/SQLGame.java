@@ -126,7 +126,6 @@ public class SQLGame implements GameDAO {
                     }
                 }
                 ps.executeUpdate();
-
                 return 0;
             }
         }
