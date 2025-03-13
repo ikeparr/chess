@@ -82,7 +82,7 @@ public class SQLGame implements GameDAO {
 
     public void updateGame(GameData game) throws DataAccessException {
         String statement = "REPLACE INTO games (gameID, whiteUsername, blackUsername, gameName, gameStatus) VALUES (?,?,?,?,?)";
-        DatabaseManager.executeUpdate(statement, game.gameID(), game.whiteUsername(), game.blackUsername(), game.gameName(), gson.toJson(game.game()));
+        DatabaseManager.executeUpdate(statement,game.gameID(),game.whiteUsername(),game.blackUsername(),game.gameName(),gson.toJson(game.game()));
     }
 
     public Collection<GameData> listGames() throws DataAccessException {
