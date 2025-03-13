@@ -137,11 +137,11 @@ public class SQLGameTests {
     }
     @Test
     void updateGameFail() throws DataAccessException {
-        GameData game = new GameData(1897, null, null, "failGame", new ChessGame());
-        sqlGame.updateGame(game);
+        GameData game = new GameData(1, null, null, "failGame", new ChessGame());
+        sqlGame.createGame(game);
         boolean failTest = false;
         try {
-            sqlGame.updateGame(new GameData(1897, "nonexistentUsername", null, "failGame", game.game()));
+            sqlGame.updateGame(new GameData(1, null, null, null, game.game()));
         }
         catch (DataAccessException error) {
             failTest = true;
