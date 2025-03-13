@@ -2,7 +2,6 @@ package dataaccess;
 
 import model.*;
 import java.sql.*;
-import static java.sql.Types.NULL;
 import org.mindrot.jbcrypt.BCrypt;
 
 
@@ -19,7 +18,7 @@ public class SQLUser implements UserDAO {
     public void clear() throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
             var statement = "DELETE FROM users";
-            executeUpdate(statement);
+            DatabaseManager.executeUpdate(statement);
         }
         catch (SQLException ex) {
             throw new DataAccessException("Error: couldn't clear user table: " +ex.getMessage());
@@ -62,33 +61,6 @@ public class SQLUser implements UserDAO {
         }
         catch (SQLException ex) {
             throw new DataAccessException("User not found: " + username);
-        }
-    }
-
-
-    // executes given changes to DB //
-    private int executeUpdate(String statement, Object... params) throws DataAccessException {
-        try (var conn = DatabaseManager.getConnection()) {
-            try (var ps = conn.prepareStatement(statement)) {
-                for (var i = 0; i < params.length; i++) {
-                    var param = params[i];
-                    if (param instanceof String) {
-                        ps.setString(i + 1, (String) param);
-                    }
-                    else if (param instanceof Integer) {
-                        ps.setInt(i + 1, (Integer) param);
-                    }
-                    else if (param == null) {
-                        ps.setNull(i + 1, NULL);
-                    }
-                }
-                ps.executeUpdate();
-
-                return 0;
-            }
-        }
-        catch (SQLException ex) {
-            throw new DataAccessException("Error, could not execute update " + ex.getMessage());
         }
     }
 

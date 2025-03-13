@@ -6,7 +6,6 @@ import model.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.sql.*;
-import static java.sql.Types.NULL;
 import java.sql.Types;
 
 public class SQLGame implements GameDAO {
@@ -26,7 +25,7 @@ public class SQLGame implements GameDAO {
     public void clear() throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
             var statement = "DELETE FROM games";
-            executeUpdate(statement);
+            DatabaseManager.executeUpdate(statement);
         }
         catch (SQLException ex) {
             throw new DataAccessException("Error: couldn't clear game table");
@@ -83,7 +82,7 @@ public class SQLGame implements GameDAO {
 
     public void updateGame(GameData game) throws DataAccessException {
         String statement = "REPLACE INTO games (gameID, whiteUsername, blackUsername, gameName, gameStatus) VALUES (?,?,?,?,?)";
-        executeUpdate(statement, game.gameID(), game.whiteUsername(), game.blackUsername(), game.gameName(), gson.toJson(game.game()));
+        DatabaseManager.executeUpdate(statement, game.gameID(), game.whiteUsername(), game.blackUsername(), game.gameName(), gson.toJson(game.game()));
     }
 
     public Collection<GameData> listGames() throws DataAccessException {
@@ -108,31 +107,6 @@ public class SQLGame implements GameDAO {
         }
     }
 
-
-    // Execute changes to table
-    private int executeUpdate(String statement, Object... params) throws DataAccessException {
-        try (var conn = DatabaseManager.getConnection()) {
-            try (var ps = conn.prepareStatement(statement)) {
-                for (var i = 0; i < params.length; i++) {
-                    var param = params[i];
-                    if (param instanceof String) {
-                        ps.setString(i + 1, (String) param);
-                    }
-                    else if (param instanceof Integer) {
-                        ps.setInt(i + 1, (Integer) param);
-                    }
-                    else if (param == null) {
-                        ps.setNull(i + 1, NULL);
-                    }
-                }
-                ps.executeUpdate();
-                return 0;
-            }
-        }
-        catch (SQLException ex) {
-            throw new DataAccessException("Error, could not execute update");
-        }
-    }
 
     // Creates the tables //
     private final String[] createGameStatements = {

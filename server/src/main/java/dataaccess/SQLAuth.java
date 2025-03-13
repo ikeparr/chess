@@ -20,7 +20,7 @@ public class SQLAuth implements AuthDAO {
     public void clear() throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
             var statement = "DELETE FROM auths";
-            executeUpdate(statement);
+            DatabaseManager.executeUpdate(statement);
         }
         catch (SQLException ex) {
             throw new DataAccessException("Error: couldnt clear auth table: " + ex.getMessage());
@@ -70,7 +70,7 @@ public class SQLAuth implements AuthDAO {
     public void deleteAuth(String authToken) throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
             var statement = "DELETE FROM auths WHERE authToken = ?";
-            executeUpdate(statement, authToken);
+            DatabaseManager.executeUpdate(statement, authToken);
         }
         catch (SQLException ex) {
             throw new DataAccessException("Error: couldn't delete authToken: " + ex.getMessage());
@@ -102,30 +102,6 @@ public class SQLAuth implements AuthDAO {
         }
         catch (SQLException ex) {
             throw new DataAccessException("Error: unable to configure auth database: " + ex.getMessage());
-        }
-    }
-
-
-
-    private int executeUpdate(String statement, Object... params) throws DataAccessException {
-        try(var conn = DatabaseManager.getConnection(); var ps = conn.prepareStatement(statement)) {
-            for (var i = 0; i < params.length; i++) {
-                var param = params[i];
-                if (param instanceof Integer) {
-                    ps.setInt(i + 1, (Integer) param);
-                }
-                else if (param instanceof String) {
-                    ps.setString(i + 1, (String) param);
-                }
-                else if (param == null) {
-                    ps.setNull(i + 1, NULL);
-                }
-            }
-            ps.executeUpdate();
-            return 0;
-        }
-        catch (SQLException ex) {
-            throw new DataAccessException("Error: could not execute update");
         }
     }
 }

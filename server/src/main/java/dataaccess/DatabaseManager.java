@@ -71,4 +71,29 @@ public class DatabaseManager {
             throw new DataAccessException(e.getMessage());
         }
     }
+
+    // executes given changes to DB //
+    public static int executeUpdate(String statement, Object... params) throws DataAccessException {
+        try (var conn = DatabaseManager.getConnection()) {
+            try (var ps = conn.prepareStatement(statement)) {
+                for (var i = 0; i < params.length; i++) {
+                    var param = params[i];
+                    if (param instanceof String) {
+                        ps.setString(i + 1, (String) param);
+                    }
+                    else if (param instanceof Integer) {
+                        ps.setInt(i + 1, (Integer) param);
+                    }
+                    else if (param == null) {
+                        ps.setNull(i + 1, NULL);
+                    }
+                }
+                ps.executeUpdate();
+                return 0;
+            }
+        }
+        catch (SQLException ex) {
+            throw new DataAccessException("Error, could not execute update " + ex.getMessage());
+        }
+    }
 }
