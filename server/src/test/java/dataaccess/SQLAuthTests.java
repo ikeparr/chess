@@ -48,4 +48,40 @@ public class SQLAuthTests {
         }
         assert failTest;
     }
+
+
+    @Test
+    void getAuthSuccessful() throws DataAccessException {
+        sqlUser.createUser(new UserData("testAuthUser", "password", "auth@gmail.com"));
+        String authToken = UUID.randomUUID().toString();
+        AuthData input = new AuthData(authToken, "testAuthUser");
+        sqlAuth.createAuth(input);
+        AuthData results = null;
+        boolean successfulTest = true;
+        try {
+            results = sqlAuth.getAuth(authToken);
+        }
+        catch (DataAccessException error) {
+            successfulTest = false;
+        }
+        assert successfulTest;
+        assert results != null;
+        assert authToken.equals(results.authToken());
+    }
+    @Test
+    void getAuthFail() throws DataAccessException {
+        boolean failTest = false;
+        AuthData results = null;
+        try {
+            results = sqlAuth.getAuth("fakeAuthToken");
+            if (results != null) {
+                failTest = true;
+            }
+        }
+        catch (DataAccessException error) {
+            failTest = true;
+        }
+        assert !failTest;
+    }
+
 }
