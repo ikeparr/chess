@@ -84,4 +84,40 @@ public class SQLAuthTests {
         assert !failTest;
     }
 
+
+    @Test
+    void deleteAuthSuccessful() throws DataAccessException {
+        sqlUser.createUser(new UserData("deleteUser", "password", "delete@email.com"));
+        String authToken = UUID.randomUUID().toString();
+        AuthData auth = new AuthData(authToken, "deleteUser");
+        sqlAuth.createAuth(auth);
+        boolean successfulTest = true;
+        try {
+            sqlAuth.deleteAuth(authToken);
+        } catch (DataAccessException error) {
+            successfulTest = false;
+        }
+        assert successfulTest;
+        assert sqlAuth.getAuth(authToken) == null;
+    }
+
+
+    @Test
+    void clearSuccessful() throws DataAccessException {
+        sqlUser.createUser(new UserData("deleteUser", "password", "delete@email.com"));
+        String authToken = UUID.randomUUID().toString();
+        AuthData auth = new AuthData(authToken, "deleteUser");
+        sqlAuth.createAuth(auth);
+        boolean successfulTest = true;
+        try {
+            sqlAuth.clear();
+        }
+        catch (DataAccessException error) {
+            successfulTest = false;
+        }
+        assert successfulTest;
+        AuthData retrieved = sqlAuth.getAuth(authToken);
+        assert retrieved == null;
+    }
+
 }
