@@ -30,9 +30,9 @@ public class SQLUser implements UserDAO {
         try (var conn = DatabaseManager.getConnection()) {
             var statement = "INSERT INTO users (username, hashed_password, email) VALUES (?,?,?)";
             try (var ps = conn.prepareStatement(statement)) {
-                String hashed_password = BCrypt.hashpw(user.password(), BCrypt.gensalt());
+                String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
                 ps.setString(1, user.username());
-                ps.setString(2, hashed_password);
+                ps.setString(2, hashedPassword);
                 ps.setString(3, user.email());
                 ps.executeUpdate();
             }
@@ -51,10 +51,10 @@ public class SQLUser implements UserDAO {
                 ps.setString(1, username);
                 try (var results = ps.executeQuery()) {
                     if (results.next()) {
-                        String db_username = results.getString("username");
-                        String hashed_password = results.getString("hashed_password");
+                        String dbUsername = results.getString("username");
+                        String hashedPassword = results.getString("hashed_password");
                         String email = results.getString("email");
-                        return new UserData(db_username, hashed_password, email);
+                        return new UserData(dbUsername, hashedPassword, email);
                     }
                     return null; //This means user not found
                 }

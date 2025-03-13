@@ -52,9 +52,9 @@ public class SQLAuth implements AuthDAO {
                 ps.setString(1, authToken);
                 try (var results = ps.executeQuery()) {
                     if (results.next()) {
-                        String db_authToken = results.getString("authToken");
-                        String db_username = results.getString("username");
-                        return new AuthData(db_authToken, db_username);
+                        String dbAuthToken = results.getString("authToken");
+                        String dbUsername = results.getString("username");
+                        return new AuthData(dbAuthToken, dbUsername);
                     }
                     return null;
                 }
