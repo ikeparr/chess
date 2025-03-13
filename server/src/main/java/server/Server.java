@@ -5,12 +5,11 @@ import spark.*;
 import dataaccess.*;
 
 public class Server {
-    private final AuthDAO authDAO = new MemoryAuth();
-    private final GameDAO gameDAO = new MemoryGame();
-    private final UserDAO userDAO = new MemoryUser();
+//    private final AuthDAO authDAO = new MemoryAuth();
 //    private final GameDAO gameDAO = new MemoryGame();
 //    private final UserDAO userDAO = new MemoryUser();
     private final UserDAO userDAO = new SQLUser();
+    private final AuthDAO authDAO = new SQLAuth();
     private final GameDAO gameDAO = new SQLGame();
 
 
