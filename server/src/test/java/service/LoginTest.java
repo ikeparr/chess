@@ -17,24 +17,25 @@ public class LoginTest {
         loginService = new UserService(userDAO, authDAO);
     }
 
-
     @Test
     void loginSuccessful() throws DataAccessException {
-        UserData user = new UserData("me", "myself", "andI@gmail.com" );
+        UserService loginService = new UserService(userDAO, new MemoryAuth()); // Replace with your AuthDAO
+        UserData user = new UserData("me", "myself", "andI@gmail.com");
         boolean successfulTest = true;
+
         userDAO.createUser(user);
         try {
             AuthData auth = loginService.login(user.username(), user.password());
-        }
-        catch (DataAccessException error) {
+        } catch (DataAccessException error) {
             successfulTest = false;
         }
+
         assert successfulTest;
     }
 
-
     @Test
     void loginFailPassword() throws DataAccessException {
+        UserService loginService = new UserService(userDAO, new MemoryAuth());
         UserData user = new UserData("me", "myself", "andI@gmail.com" );
         boolean successfulTest = false;
         userDAO.createUser(user);
@@ -46,7 +47,6 @@ public class LoginTest {
         }
         assert successfulTest;
     }
-
 
     @Test
     void loginFailUsername() throws DataAccessException {
