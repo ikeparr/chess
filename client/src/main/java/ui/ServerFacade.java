@@ -3,6 +3,9 @@ package ui;
 import com.google.gson.*;
 import com.google.gson.Gson;
 import exceptions.ResponseException;
+import model.GameData;
+import model.UserData;
+import model.AuthData;
 
 import java.io.IOException;
 import java.io.InputStream;
