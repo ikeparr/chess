@@ -22,6 +22,43 @@ public class ServerFacade {
         serverURL = url;
     }
 
+    public AuthData registerUser(String username, String password, String email) throws ResponseException {
+        var path = "/user";
+        UserData user = new UserData(username, password, email);
+        return this.makeRequest("POST", path, user, AuthData.class, null);
+    }
+
+    public AuthData loginUser(UserData user) throws ResponseException {
+        var path = "/session";
+        return this.makeRequest("POST", path, user, AuthData.class, null);
+    }
+
+    public void logoutUser(String authToken) throws  ResponseException {
+        var path = "/session";
+        this.makeRequest("DELETE", path, null, null, authToken);
+        authToken = null;
+    }
+
+    public int createGame(String gameName, String authToken) throws ResponseException {
+        var path = "/game";
+        record gameID(int gameID) {};
+        return this.makeRequest("POST", path, gameName, gameID.class, authToken).gameID();
+    }
+
+    public void joinGame(String username, String color, int gameID, String authToken) throws ResponseException {
+        var path = "/game";
+        record joinGame(String username, String color, int gameID) {};
+        this.makeRequest("PUT", path, new joinGame(username, color, gameID), null, authToken);
+    }
+
+    public GameData[] listGames(String authToken) throws ResponseException {
+        var path = "/game";
+        record listGames(GameData[] games) {}
+        var response = this.makeRequest("GET", path, null, listGames.class, authToken);
+        return response.games();
+    }
+
+
 
     /// MOSTLY PETSHOP CODE BELOW ///
     // CREATE REQUEST
