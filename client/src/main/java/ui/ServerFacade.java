@@ -103,8 +103,15 @@ public class ServerFacade {
 
     //MAKE SURE IS VALID
     private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException {
-        if (http.getResponseCode() != 200) {
-            throw new ResponseException("Error: " + http.getResponseCode());
+        var status = http.getResponseCode();
+        if (!isSuccessful(status)) {
+            try (InputStream respErr = http.getErrorStream()) {
+                if (respErr != null) {
+                    throw ResponseException.fromJson(respErr);
+                }
+            }
+
+            throw new ResponseException(status, "other failure: " + status);
         }
     }
 
