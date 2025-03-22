@@ -36,4 +36,16 @@ public class PreLoginClient {
             return ex.getMessage();
         }
     }
+    public String quit() throws ResponseException {
+        return "quit";
+    }
+
+    public String help() {
+            return """
+                    - register <username> <password> <email>
+                    - login <username> <password>
+                    - help
+                    - quit
+                    """;
+    }
 }
