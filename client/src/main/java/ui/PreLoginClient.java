@@ -36,6 +36,33 @@ public class PreLoginClient {
             return ex.getMessage();
         }
     }
+
+    public String registerUser(String... params) throws ResponseException {
+        if (params.length == 3) {
+            var username = params[0];
+            var password = params[1];
+            var email = params[2];
+            var request = server.registerUser(username, password, email);
+            authToken = request.authToken();
+            return String.format("registered and logged in as %s", username);
+//        }
+//        else {
+//            return "three parameters required for register: <username> <password> <email>";
+        }
+        throw new ResponseException(400, "Expected: <username> <password> <email>");
+    }
+
+    public String loginUser(String... params) throws ResponseException {
+        if (params.length == 2) {
+            var username = params[0];
+            var password = params[1];
+            var request = server.loginUser(username, password);
+            authToken = request.authToken();
+            return String.format("logged in as %s", username);
+        }
+        throw new ResponseException(400, "Expected: <username> <password>");
+    }
+
     public String quit() throws ResponseException {
         return "quit";
     }
