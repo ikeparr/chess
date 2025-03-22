@@ -37,11 +37,12 @@ public class ServerFacade {
             //GET RESPONSE
             return readBody(http, responseClass);
         }
-        catch (IOException exception) {
-            throw new ResponseException("Error: " + exception.getMessage());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+        catch (ResponseException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new ResponseException(500, ex.getMessage());
         }
+
     }
 
     //CREATE REQ BODY
