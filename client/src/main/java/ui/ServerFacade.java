@@ -22,12 +22,17 @@ public class ServerFacade {
 
     /// MOSTLY PETSHOP CODE BELOW ///
     // CREATE REQUEST
-    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
+    /// /// Check if can pass in authtoken in make request /// ///
+    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass, String authToken) throws ResponseException {
         try {
             URL url = (new URI(serverURL + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
             http.setDoOutput(true);
+            //MUST HAVE AUTHORIZATION FOR LISTGAME, JOINGAME, CREATEGAME, LOGOUT
+            if (authToken != null) {
+                http.addRequestProperty("Authorization", authToken);
+            }
             //CREATE BODY
             writeBody(request, http);
             //SEND REQ TO SERVER
