@@ -1,6 +1,5 @@
 package ui;
 
-import com.google.gson.*;
 import com.google.gson.Gson;
 import exceptions.ResponseException;
 import model.GameData;
@@ -36,7 +35,7 @@ public class ServerFacade {
     public void logoutUser(String authToken) throws  ResponseException {
         var path = "/session";
         this.makeRequest("DELETE", path, null, null, authToken);
-        authToken = null;
+//        authToken = null;
     }
 
     public int createGame(String gameName, String authToken) throws ResponseException {
@@ -109,7 +108,7 @@ public class ServerFacade {
         if (!isSuccessful(status)) {
             try (InputStream respErr = http.getErrorStream()) {
                 if (respErr != null) {
-                    throw ResponseException.fromJson(respErr);
+                    throw ResponseException.fromJson(respErr, status);
                 }
             }
 
