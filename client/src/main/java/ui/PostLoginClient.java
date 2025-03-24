@@ -38,6 +38,31 @@ public class PostLoginClient {
             return ex.getMessage();
         }
     }
+
+    public String createGame(String... params) throws ResponseException {
+        if (params.length == 1) {
+            var gameName = params[0];
+            var request = serverFacade.createGame(gameName, authToken);
+            return String.format("Game created. GameID: " + request);
+        }
+        throw new ResponseException(400, "Expected: <gameName>");
+    }
+
+    public String listGames() throws ResponseException {
+        var games = serverFacade.listGames(authToken);
+        var result = new StringBuilder();
+        var gson = new Gson();
+        for (var game : games) {
+            // SPLIT UP USING FORMATED STRING TO AVOID JSON OUTPUT
+            result.append(String.format("GameID: %d, White: %s, Black: %s, GameName: %s%n",
+                    game.gameID(),
+                    game.whiteUsername() != null ? game.whiteUsername() : "empty",
+                    game.blackUsername() != null ? game.blackUsername() : "empty",
+                    game.gameName())).append("\n");
+        }
+        return result.toString();
+    }
+
     public String logout() throws ResponseException {
         serverFacade.logoutUser(authToken);
         authToken = null;
