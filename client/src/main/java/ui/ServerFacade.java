@@ -41,8 +41,10 @@ public class ServerFacade {
 
     public int createGame(String gameName, String authToken) throws ResponseException {
         var path = "/game";
-        record gameID(int gameID) {};
-        return this.makeRequest("POST", path, gameName, gameID.class, authToken).gameID();
+        record GameID(int gameID) {};
+        record GameReq(String gameName) {}
+        GameID response = this.makeRequest("POST", path, new GameReq(gameName), GameID.class, authToken);
+        return response.gameID();
     }
 
     public void joinGame(String username, String color, int gameID, String authToken) throws ResponseException {
@@ -63,7 +65,7 @@ public class ServerFacade {
     /// MOSTLY PETSHOP CODE BELOW ///
     // CREATE REQUEST
     /// /// Check if can pass in authtoken in make request /// ///
-    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass, String authToken) throws ResponseException {
+    public <T> T makeRequest(String method, String path, Object request, Class<T> responseClass, String authToken) throws ResponseException {
         try {
             URL url = (new URI(serverURL + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
