@@ -36,6 +36,10 @@ public class PostLoginRepl {
                     GameplayRepl gameplayRepl = new GameplayRepl(serverUrl, postLoginClient.authToken, postLoginClient.playerColor);
                     gameplayRepl.run();
                 }
+                if (result.equals("User observing game.\n")) {
+                    ObserveGameRepl observeGameRepl = new ObserveGameRepl(serverUrl, postLoginClient.authToken);
+                    observeGameRepl.run();
+                }
             } catch (Throwable e) {
                 var msg = e.toString();
                 System.out.print(msg);
