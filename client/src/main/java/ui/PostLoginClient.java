@@ -11,13 +11,16 @@ public class PostLoginClient {
     private final ServerFacade serverFacade;
     private final int serverURL;
     public String authToken;
+    public String usernameLoggedIn;
+    public String playerColor;
     /// ADJUST PETSHOP CODE BELOW:
 
 
-    public PostLoginClient(int serverUrl, String authToken) {
+    public PostLoginClient(int serverUrl, String authToken, String usernameLoggedIn) {
         serverFacade = new ServerFacade(serverUrl);
         this.serverURL = serverUrl;
         this.authToken = authToken;
+        this.usernameLoggedIn = usernameLoggedIn;
 
     }
 
@@ -63,6 +66,26 @@ public class PostLoginClient {
         return result.toString();
     }
 
+    public String joinGame(String... params) throws ResponseException {
+        if (params.length == 2) {
+            try {
+                int gameID = Integer.parseInt(params[0]);
+                var color = params[1].toUpperCase();
+                if (gameID >= 1) {
+                    if (color.equals("BLACK") || color.equals("WHITE")) {
+                        serverFacade.joinGame(usernameLoggedIn, color, gameID, authToken);
+                        playerColor = color;
+
+                        return "User joined game.\n";
+                    }
+                }
+            }
+            catch (NumberFormatException error) {
+                throw new ResponseException(400, "Invalid gameID: " + params[0]);
+            }
+        }
+        throw new ResponseException(400, "Expected: <gameID> <teamColor>");
+    }
     public String logout() throws ResponseException {
         serverFacade.logoutUser(authToken);
         authToken = null;
