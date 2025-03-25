@@ -48,7 +48,7 @@ public class ChessBoard {
     }
 
     /// WHITE BOARD SET UP
-    private static void drawWhiteBoard(PrintStream out) {
+    public static void drawWhiteBoard(PrintStream out) {
         drawHeadersWhite(out);
         drawWhiteChessBoard(out);
         drawFootersWhite(out);
@@ -56,7 +56,7 @@ public class ChessBoard {
         out.print(SET_TEXT_COLOR_WHITE);
     }
 
-    private static void drawBlackBoard(PrintStream out) {
+    public static void drawBlackBoard(PrintStream out) {
         drawHeadersBlack(out);
         drawBlackChessBoard(out);
         drawFootersBlack(out);
