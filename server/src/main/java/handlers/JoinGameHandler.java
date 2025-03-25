@@ -26,8 +26,7 @@ public class JoinGameHandler implements Route {
             JoinRequest request = gson.fromJson(req.body(), JoinRequest.class);
             String authToken = req.headers("authorization");
             AuthData user = userService.validateAuthToken(authToken);
-
-            if (request == null || request.playerColor() == null || request.gameID() == null || request.gameID() <= 0) {
+            if (request.playerColor() == null || request.gameID() == null || request.gameID() <= 0) {
                 resp.status(400);
                 return gson.toJson(new ErrorResponse("Error: bad request"));
             }
