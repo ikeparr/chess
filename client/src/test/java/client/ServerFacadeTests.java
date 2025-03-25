@@ -143,4 +143,58 @@ public class ServerFacadeTests {
         assert testFails;
     }
 
+    @Test
+    void joiningGameSuccess() throws ResponseException {
+        AuthData authData = serverFacade.registerUser("testUser", "testPassword", "testEmail");
+        serverFacade.createGame("testGame", authData.authToken());
+        boolean testSuccess = true;
+        try {
+            serverFacade.joinGame(authData.username(), "WHITE", 1, authData.authToken());
+        }
+        catch (ResponseException error){
+            testSuccess = false;
+        }
+        assert testSuccess;
+    }
+
+    @Test
+    void joiningGameFail() throws ResponseException {
+        AuthData authData = serverFacade.registerUser("testUser", "testPassword", "testEmail");
+        boolean testFail = false;
+        try {
+            serverFacade.joinGame(authData.username(), "WHITE", 1, authData.authToken());
+        }
+        catch (ResponseException error){
+            testFail = true;
+        }
+        assert testFail;
+    }
+
+    @Test
+    void listGamesSuccess() throws ResponseException {
+        AuthData authData = serverFacade.registerUser("testUser", "testPassword", "testEmail");
+        serverFacade.createGame("testGame", authData.authToken());
+        boolean testSuccess = true;
+        try {
+            serverFacade.listGames(authData.authToken());
+        }
+        catch (ResponseException error) {
+            testSuccess = false;
+        }
+        assert testSuccess;
+    }
+
+    @Test
+    void listGamesFail() throws ResponseException {
+        AuthData authData = serverFacade.registerUser("testUser", "testPassword", "testEmail");
+        serverFacade.logoutUser(authData.authToken());
+        boolean testFail = true;
+        try {
+            serverFacade.listGames(authData.authToken());
+        }
+        catch (ResponseException error) {
+            testFail = true;
+        }
+        assert testFail;
+    }
 }
