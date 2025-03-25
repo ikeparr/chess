@@ -9,8 +9,8 @@ public class PostLoginRepl {
     private final PostLoginClient postLoginClient;
     private final int serverUrl;
 
-    public PostLoginRepl(int serverUrl, String authToken) {
-        postLoginClient = new PostLoginClient(serverUrl, authToken);
+    public PostLoginRepl(int serverUrl, String authToken, String usernameLoggedIn) {
+        postLoginClient = new PostLoginClient(serverUrl, authToken, usernameLoggedIn);
         this.serverUrl = serverUrl;
     }
 
@@ -27,10 +27,14 @@ public class PostLoginRepl {
             try {
                 result = postLoginClient.eval(line);
                 System.out.print(SET_TEXT_COLOR_BLUE + result);
-                if (result.equals("User logged out\n")) {
+                if (result.equals("User logged out.\n")) {
                     PreLoginRepl preLoginRepl = new PreLoginRepl(serverUrl);
                     preLoginRepl.run();
                     break;
+                }
+                if (result.equals("User joined game.\n")) {
+                    GameplayRepl gameplayRepl = new GameplayRepl(serverUrl, postLoginClient.authToken, postLoginClient.playerColor);
+                    gameplayRepl.run();
                 }
             } catch (Throwable e) {
                 var msg = e.toString();
