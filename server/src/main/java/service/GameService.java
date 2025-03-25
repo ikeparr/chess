@@ -6,7 +6,6 @@ import java.util.Collection;
 
 public class GameService {
     private final GameDAO gameDAO;
-    private int nextGameID = 1;
 
     public GameService(GameDAO gameDao) {
         this.gameDAO = gameDao;
