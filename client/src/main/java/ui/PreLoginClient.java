@@ -12,6 +12,7 @@ public class PreLoginClient {
     private final ServerFacade server;
     private final int serverURL;
     public String authToken;
+    public String usernameLoggedIn;
 
 
 
@@ -19,6 +20,7 @@ public class PreLoginClient {
         server = new ServerFacade(serverURL);
         this.serverURL = serverURL;
         authToken = null;
+        usernameLoggedIn = null;
     }
 
     public String eval(String input) {
@@ -44,6 +46,7 @@ public class PreLoginClient {
             var email = params[2];
             var request = server.registerUser(username, password, email);
             authToken = request.authToken();
+            usernameLoggedIn = request.username();
             return String.format("registered and logged in as %s", username);
 //        }
 //        else {
@@ -58,6 +61,7 @@ public class PreLoginClient {
             var password = params[1];
             var request = server.loginUser(username, password);
             authToken = request.authToken();
+            usernameLoggedIn = request.username();
             return String.format("logged in as %s", username);
         }
         throw new ResponseException(400, "Expected: <username> <password>");
