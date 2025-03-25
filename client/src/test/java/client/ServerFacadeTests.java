@@ -49,4 +49,77 @@ public class ServerFacadeTests {
         assertNotEquals("testUser23", authData.username());
     }
 
+    @Test
+    void loginUserSuccess() throws ResponseException {
+        AuthData authData = serverFacade.registerUser("testUser", "testPassword", "email@email.com");
+        serverFacade.logoutUser(authData.authToken());
+        boolean successfulTest = true;
+        try {
+            serverFacade.loginUser("testUser", "testPassword");
+        }
+        catch (ResponseException error) {
+            successfulTest = false;
+        }
+        assert successfulTest;
+    }
+
+    @Test
+    void loginUserFail() throws ResponseException {
+        AuthData authData = serverFacade.registerUser("testUser", "testPassword", "email@email.com");
+        serverFacade.logoutUser(authData.authToken());
+        boolean failTest = false;
+        try {
+            serverFacade.loginUser("testUser", "testPassword2");
+        }
+        catch (ResponseException error) {
+            failTest = true;
+        }
+        assert failTest;
+    }
+
+    @Test
+    void logoutUserSuccess() throws ResponseException {
+        AuthData authData = serverFacade.registerUser("testUser", "testPassword", "email@email.com");
+        boolean successfulTest = true;
+        try {
+            serverFacade.logoutUser(authData.authToken());
+        }
+        catch (ResponseException error) {
+            successfulTest = false;
+        }
+        assert successfulTest;
+    }
+
+    @Test
+    void logoutUserFail() throws ResponseException {
+        boolean failTest = false;
+        try {
+            serverFacade.logoutUser("nonexistentAuthToken");
+        }
+        catch (ResponseException error) {
+            failTest = true;
+        }
+        assert failTest;
+    }
+
+    @Test
+    void createGameSuccessful() throws ResponseException{
+        AuthData authData = serverFacade.registerUser("testUser", "testPassword", "testEmail");
+        int gameID = serverFacade.createGame("testGame", authData.authToken());
+        assertEquals(1, gameID);
+    }
+
+    @Test
+    void createGameFailure() throws ResponseException{
+        AuthData authData = serverFacade.registerUser("testUser", "testPassword", "testEmail");
+        boolean testFails = false;
+        try {
+            serverFacade.createGame("testGame", "fakeauthToken");
+        }
+        catch (ResponseException error) {
+            testFails = true;
+        }
+        assert testFails;
+    }
+
 }
