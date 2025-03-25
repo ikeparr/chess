@@ -33,8 +33,29 @@ public class ServerFacadeTests {
     }
 
     @Test
-    public void sampleTest() {
-        Assertions.assertTrue(true);
+    void clearDatabaseSuccess() throws ResponseException {
+        boolean success = true;
+        try {
+            serverFacade.registerUser("testUser", "testPassword", "email@email.com");
+            serverFacade.makeRequest("DELETE", "/db", null, null, null);
+        }
+        catch (ResponseException error) {
+            success = false;
+        }
+        assert success;
+    }
+
+    @Test
+    void clearDatabaseFail() throws ResponseException {
+        boolean success = true;
+        try {
+            serverFacade.registerUser("testUser", "testPassword", "email@email.com");
+            serverFacade.makeRequest("DELETE", "/db", null, null, null);
+        }
+        catch (ResponseException error) {
+            success = false;
+        }
+        assert success;
     }
 
     @Test
