@@ -28,7 +28,7 @@ public class PreLoginRepl {
                 System.out.print(SET_TEXT_COLOR_BLUE + result);
                 //             IF AUTHTOKEN != NULL THEN IN POSTLOGIN REPL
                 if (preLoginClient.authToken != null) {
-                    PostLoginRepl postLoginRepl = new PostLoginRepl(serverURL, preLoginClient.authToken);
+                    PostLoginRepl postLoginRepl = new PostLoginRepl(serverURL, preLoginClient.authToken, preLoginClient.usernameLoggedIn);
                     postLoginRepl.run();
                     break;
                 }
