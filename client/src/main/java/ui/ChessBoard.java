@@ -240,30 +240,18 @@ public class ChessBoard {
         out.print(SET_TEXT_COLOR_WHITE);
     }
 
-    private static void setRed(PrintStream out) {
-        out.print(SET_BG_COLOR_RED);
-        out.print(SET_TEXT_COLOR_RED);
-    }
 
     private static void setBlack(PrintStream out) {
         out.print(SET_BG_COLOR_BLACK);
         out.print(SET_TEXT_COLOR_BLACK);
     }
 
-    private static void setDark(PrintStream out) {
-        out.print(SET_BG_COLOR_DARK_GREY);
-        out.print(SET_TEXT_COLOR_DARK_GREY);
-    }
 
     private static void setLight(PrintStream out) {
         out.print(SET_BG_COLOR_LIGHT_GREY);
         out.print(SET_TEXT_COLOR_LIGHT_GREY);
     }
 
-    private static void setYellow(PrintStream out) {
-        out.print(SET_BG_COLOR_YELLOW);
-        out.print(SET_BG_COLOR_YELLOW);
-    }
 
     private static void printPlayer(PrintStream out, String player) {
         out.print(SET_TEXT_COLOR_BLACK);

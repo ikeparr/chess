@@ -31,7 +31,7 @@ public class PreLoginClient {
             return switch (cmd) {
                 case "register" -> registerUser(params);
                 case "login" -> loginUser(params);
-                case "quit" -> "quit";
+                case "quit" -> quit();
                 default -> help();
             };
         } catch (ResponseException ex) {
@@ -48,9 +48,6 @@ public class PreLoginClient {
             authToken = request.authToken();
             usernameLoggedIn = request.username();
             return String.format("registered and logged in as %s", username);
-//        }
-//        else {
-//            return "three parameters required for register: <username> <password> <email>";
         }
         throw new ResponseException(400, "Expected: <username> <password> <email>");
     }

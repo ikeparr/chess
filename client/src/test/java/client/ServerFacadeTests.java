@@ -47,15 +47,9 @@ public class ServerFacadeTests {
 
     @Test
     void clearDatabaseFail() throws ResponseException {
-        boolean success = true;
-        try {
-            serverFacade.registerUser("testUser", "testPassword", "email@email.com");
-            serverFacade.makeRequest("DELETE", "/db", null, null, null);
-        }
-        catch (ResponseException error) {
-            success = false;
-        }
-        assert success;
+        serverFacade.registerUser("testUser", "testPassword", "email@email.com");
+        serverFacade.makeRequest("DELETE", "/db", null, null, null);
+        assert true;
     }
 
     @Test

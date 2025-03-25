@@ -28,8 +28,8 @@ public class ServerFacade {
 
     public AuthData loginUser(String username, String password) throws ResponseException {
         var path = "/session";
-        record loginReq(String username, String password) {}
-        return this.makeRequest("POST", path, new loginReq(username, password), AuthData.class, null);
+        record LoginReq(String username, String password) {}
+        return this.makeRequest("POST", path, new LoginReq(username, password), AuthData.class, null);
     }
 
     public void logoutUser(String authToken) throws  ResponseException {
@@ -48,14 +48,14 @@ public class ServerFacade {
 
     public void joinGame(String username, String color, int gameID, String authToken) throws ResponseException {
         var path = "/game";
-        record joinGame(String username, String playerColor, int gameID) {};
-        this.makeRequest("PUT", path, new joinGame(username, color, gameID), null, authToken);
+        record JoinGame(String username, String playerColor, int gameID) {};
+        this.makeRequest("PUT", path, new JoinGame(username, color, gameID), null, authToken);
     }
 
     public GameData[] listGames(String authToken) throws ResponseException {
         var path = "/game";
-        record listGames(GameData[] games) {}
-        var response = this.makeRequest("GET", path, null, listGames.class, authToken);
+        record ListGames(GameData[] games) {}
+        var response = this.makeRequest("GET", path, null, ListGames.class, authToken);
         return response.games();
     }
 
