@@ -24,7 +24,7 @@ public class GameService {
                 throw new DataAccessException("bad request");
         }
 
-        int gameID = (generateGameID());
+        int gameID = generateGameID();
         GameData game = new GameData(gameID, null, null, gameName, null);
         gameDAO.createGame(game);
 
@@ -32,8 +32,8 @@ public class GameService {
     }
 
 
-    public int generateGameID() {
-        return nextGameID++;
+    public int generateGameID() throws DataAccessException{
+        return listGames().size() + 1;
     }
 
 
