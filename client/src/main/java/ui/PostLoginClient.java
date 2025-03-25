@@ -34,7 +34,7 @@ public class PostLoginClient {
                 case "creategame" -> createGame(params);
                 case "listgames" -> listGames();
                 case "joingame" -> joinGame(params);
-                case "observegame" -> observeGame();
+                case "observegame" -> observeGame(params);
                 default -> help();
             };
         } catch (ResponseException ex) {
@@ -86,17 +86,28 @@ public class PostLoginClient {
         }
         throw new ResponseException(400, "Expected: <gameID> <teamColor>");
     }
+
+    public String observeGame(String ... params) throws ResponseException {
+        if (params.length == 1) {
+            int gameID = Integer.parseInt(params[0]);
+            if (gameID >= 1) {
+                return "User observing game.\n";
+            }
+        }
+        throw new ResponseException(400, "Expected: <gameID>");
+    }
+
     public String logout() throws ResponseException {
         serverFacade.logoutUser(authToken);
         authToken = null;
-        return "User logged out\n";
+        return "User logged out.\n";
     }
 
     public String help() {
         return """
                 - listGames
                 - createGame <gameName>
-                - joinGame <game id>
+                - joinGame <game id> <team color>
                 - observeGame <game id>
                 - logout
                 """;
