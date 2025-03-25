@@ -48,7 +48,7 @@ public class ServerFacade {
 
     public void joinGame(String username, String color, int gameID, String authToken) throws ResponseException {
         var path = "/game";
-        record joinGame(String username, String color, int gameID) {};
+        record joinGame(String username, String playerColor, int gameID) {};
         this.makeRequest("PUT", path, new joinGame(username, color, gameID), null, authToken);
     }
 
@@ -61,7 +61,6 @@ public class ServerFacade {
 
 
 
-    /// MOSTLY PETSHOP CODE BELOW ///
     // CREATE REQUEST
     /// /// Check if can pass in authtoken in make request /// ///
     public <T> T makeRequest(String method, String path, Object request, Class<T> responseClass, String authToken) throws ResponseException {
