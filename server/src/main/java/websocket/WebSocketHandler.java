@@ -50,6 +50,12 @@ public class WebSocketHandler {
         session.getRemote().sendString(message);
     }
 
+    private void onError(Throwable throwable, Session session) throws IOException {
+        ErrorMessage errorMessage = new ErrorMessage(throwable.getMessage());
+        String errorString = new Gson().toJson(errorMessage);
+        sendMessage(errorString, session);
+    }
+
     private void connect(UserGameCommand command, Session session) throws IOException {
     }
     private void leave(UserGameCommand command, Session session) throws IOException {
