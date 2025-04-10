@@ -1,6 +1,6 @@
 package websocket;
 
-import chess.ChessGame;
+import chess.*;
 import com.google.gson.Gson;
 import exceptions.ErrorResponse;
 import exceptions.ResponseException;
@@ -12,6 +12,7 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import websocket.commands.MakeMoveCommand;
 import websocket.commands.UserGameCommand;
 import websocket.messages.*;
 
@@ -29,9 +30,10 @@ public class WebSocketHandler {
     @OnWebSocketMessage
     public void onMessage(Session session, String message) throws IOException {
         UserGameCommand command = new Gson().fromJson(message, UserGameCommand.class);
+        MakeMoveCommand moveCommand = new Gson().fromJson(message, MakeMoveCommand.class);
         switch (command.getCommandType()) {
             case CONNECT -> connect(command, session);
-            case MAKE_MOVE -> makeMove(command, session);
+            case MAKE_MOVE -> makeMove(moveCommand, session);
             case LEAVE -> leave(command, session);
             case RESIGN -> resign(command, session);
         }
@@ -133,8 +135,52 @@ public class WebSocketHandler {
         }
     }
 
-    public void makeMove(UserGameCommand command, Session session) throws IOException {
+    public void makeMove(MakeMoveCommand command, Session session) throws IOException {
+        try {
+            String username = authDAO.getAuth(command.getAuthToken()).username();
+            GameData game = gameDAO.getGame(command.getGameID());
+            ChessMove move = command.getMove();
+            ChessPiece piece = game.game().getBoard().getPiece(move.getStartPosition());
+
+            if (game.blackUsername() != null && username.equals(game.blackUsername()) && !game.game().gameOver) {
+                if (piece.getTeamColor() != ChessGame.TeamColor.BLACK) {
+                    throw new InvalidMoveException("Cannot move other teams piece");
+                }
+
+                game.game().makeMove(move);
+                gameDAO.updateGame(game);
+                broadcastLoadGameMessage(command.getGameID(), new LoadGameMessage(game.game()), null);
+                broadcastMessage(command.getGameID(), new NotificationMessage(username + "made a move"), session);
+
+
+            }
+            else if (game.whiteUsername() != null && username.equals(game.whiteUsername()) && !game.game().gameOver) {
+                if (piece.getTeamColor() != ChessGame.TeamColor.WHITE) {
+                    throw new InvalidMoveException("Cannot move other teams piece");
+                }
+
+                game.game().makeMove(move);
+                gameDAO.updateGame(game);
+                broadcastLoadGameMessage(command.getGameID(), new LoadGameMessage(game.game()), null);
+                broadcastMessage(command.getGameID(), new NotificationMessage(username + "made a move"), session);
+
+            }
+            /// CHANGE TO BE SPECIFIC LATER
+            else if (game.game().isInCheck(game.game().getTeamTurn()) || game.game().isInStalemate(game.game().getTeamTurn()) || game.game().isInCheckmate(game.game().getTeamTurn())) {
+                broadcastMessage(command.getGameID(), new NotificationMessage(username + "is now in stalemate, checkmate, OR check :)"), null);
+            }
+            else {
+                ErrorMessage errorMessage = new ErrorMessage("Observer cannot make moves");
+                String eMessage = new Gson().toJson(errorMessage);
+                sendMessage(eMessage, session);
+            }
+        }
+        catch (Exception ex) {
+            onError(ex, session);
+
+        }
     }
+
     public void resign(UserGameCommand command, Session session) throws IOException {
         try {
             String username = authDAO.getAuth(command.getAuthToken()).username();
