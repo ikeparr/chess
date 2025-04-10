@@ -46,6 +46,15 @@ public class WebSocketHandler {
         }
     }
 
+    private void broadcastLoadGameMessage(int gameID, LoadGameMessage message, Session session) throws IOException {
+        for (Session gameSessions : connections.getSession(gameID)) {
+            if (gameSessions.isOpen() && !gameSessions.equals(session)) {
+                String notification = new Gson().toJson(message);
+                gameSessions.getRemote().sendString(notification);
+            }
+        }
+    }
+
     private void sendMessage(String message, Session session) throws IOException {
         session.getRemote().sendString(message);
     }
