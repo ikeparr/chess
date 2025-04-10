@@ -57,7 +57,6 @@ public class WebSocketHandler {
     }
 
     private void connect(UserGameCommand command, Session session) throws IOException {
-    }
         try {
             connections.add(command.getGameID(), session);
             String username = authDAO.getAuth(command.getAuthToken()).username();
@@ -71,6 +70,11 @@ public class WebSocketHandler {
             else if (game.whiteUsername() != null && username.equals(game.whiteUsername())) {
                 broadcastMessage(command.getGameID(),
                         new NotificationMessage(username + " has joined the game as WHITE"),
+                        session);
+            }
+            else {
+                broadcastMessage(command.getGameID(),
+                        new NotificationMessage(username + " has joined the game as an observer"),
                         session);
             }
             LoadGameMessage loadGameMessage = new LoadGameMessage(game.game());
