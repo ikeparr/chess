@@ -1,12 +1,10 @@
 package ui;
 
 import exceptions.ResponseException;
-import ui.ChessBoard;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import websocket.NotificationHandler;
 import websocket.WebSocketFacade;
 
 public class GameplayClient {
@@ -17,7 +15,6 @@ public class GameplayClient {
     public int gameID;
 
     private WebSocketFacade ws;
-//    private final NotificationHandler notificationHandler;
 
 
     public GameplayClient(int serverUrl, String authToken, String color, int gameID) {
@@ -25,10 +22,6 @@ public class GameplayClient {
         this.authToken = authToken;
         this.color = color;
         this.username = username;
-//        this.notificationHandler = notificationHandler;
-//        this.ws = new WebSocketFacade(serverUrl, this);
-//        ws.connectToGame(authToken, gameID);
-
     }
 
     public String eval(String input) {
@@ -40,7 +33,6 @@ public class GameplayClient {
                 case "leavegame" -> leaveGame();
                 case "makeMove" -> move();
                 case "highlightMoves" -> highlightMoves();
-//                case "redrawBoard" -> redrawBoard();
                 case "resign" -> resign();
                 default -> help();
             };
@@ -77,7 +69,6 @@ public class GameplayClient {
 
     public String resign() throws ResponseException {
         /// IMPLEMENT WEBSOCKET HERE
-//        ws.resignGame(authToken, gameID);
         return "User resigned\n";
     }
 
