@@ -127,6 +127,28 @@ public class WebSocketHandler {
     public void makeMove(UserGameCommand command, Session session) throws IOException {
     }
     public void resign(UserGameCommand command, Session session) throws IOException {
+        try {
+            String username = authDAO.getAuth(command.getAuthToken()).username();
+            GameData game = gameDAO.getGame(command.getGameID());
+
+            if (game.blackUsername() != null && username.equals(game.blackUsername()) && !game.game().gameOver||
+                    game.whiteUsername() != null && username.equals(game.whiteUsername()) && !game.game().gameOver) {
+
+                game.game().setGameOver(true);
+                broadcastMessage(command.getGameID(),
+                        new NotificationMessage(username + " has resigned. GAME OVER"),
+                        null);
+                gameDAO.updateGame(game);
+            }
+            else {
+                ErrorMessage errorMessage = new ErrorMessage("Observer cannot resign the game");
+                String eMessage = new Gson().toJson(errorMessage);
+                sendMessage(eMessage, session);
+            }
+        }
+        catch (Exception ex) {
+            onError(ex, session);
+        }
     }
 
 }
