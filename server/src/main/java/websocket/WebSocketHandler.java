@@ -40,5 +40,13 @@ public class WebSocketHandler {
         session.getRemote().sendString(message);
     }
 
+    private void connect(UserGameCommand command, Session session) throws IOException {
+    }
+    private void leave(UserGameCommand command, Session session) throws IOException {
+    }
+    public void makeMove(UserGameCommand command, Session session) throws IOException {
+    }
+    public void resign(UserGameCommand command, Session session) throws IOException {
+    }
 
 }
