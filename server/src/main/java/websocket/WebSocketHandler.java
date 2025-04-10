@@ -166,7 +166,9 @@ public class WebSocketHandler {
 
             }
             /// CHANGE TO BE SPECIFIC LATER
-            else if (game.game().isInCheck(game.game().getTeamTurn()) || game.game().isInStalemate(game.game().getTeamTurn()) || game.game().isInCheckmate(game.game().getTeamTurn())) {
+            else if (game.game().isInCheck(game.game().getTeamTurn()) ||
+                    game.game().isInStalemate(game.game().getTeamTurn()) ||
+                    game.game().isInCheckmate(game.game().getTeamTurn())) {
                 broadcastMessage(command.getGameID(), new NotificationMessage(username + "is now in stalemate, checkmate, OR check :)"), null);
             }
             else {
