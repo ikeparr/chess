@@ -13,7 +13,7 @@ public class PostLoginClient {
     public String authToken;
     public String usernameLoggedIn;
     public String playerColor;
-    /// ADJUST PETSHOP CODE BELOW:
+    public int gameIDJoined;
 
 
     public PostLoginClient(int serverUrl, String authToken, String usernameLoggedIn) {
@@ -75,7 +75,7 @@ public class PostLoginClient {
                     if (color.equals("BLACK") || color.equals("WHITE")) {
                         serverFacade.joinGame(usernameLoggedIn, color, gameID, authToken);
                         playerColor = color;
-
+                        gameIDJoined = gameID;
                         return "User joined game.\n";
                     }
                 }
@@ -91,6 +91,7 @@ public class PostLoginClient {
         if (params.length == 1) {
             int gameID = Integer.parseInt(params[0]);
             if (gameID >= 1) {
+                gameIDJoined = gameID;
                 return "User observing game.\n";
             }
         }
