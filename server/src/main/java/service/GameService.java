@@ -24,7 +24,7 @@ public class GameService {
         }
 
         int gameID = generateGameID();
-        GameData game = new GameData(gameID, null, null, gameName, null);
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
         gameDAO.createGame(game);
 
         return gameID;
