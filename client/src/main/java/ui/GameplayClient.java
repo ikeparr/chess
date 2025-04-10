@@ -57,8 +57,6 @@ public class GameplayClient {
         if (color.equals("BLACK")) {
             ChessBoard.drawBlackBoard(out);
         }
-//        ws = new WebSocketFacade(serverUrl, notificationHandler);
-//        ws.connectToGame(authToken, serverUrl);
     }
 
     public String leaveGame() throws ResponseException {
@@ -81,10 +79,6 @@ public class GameplayClient {
         /// IMPLEMENT WEBSOCKET HERE
 //        ws.resignGame(authToken, gameID);
         return "User resigned\n";
-    }
-
-    public void redrawBoard() {
-
     }
 
     public String help() {
