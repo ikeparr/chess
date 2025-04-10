@@ -3,6 +3,7 @@ package server;
 import handlers.*;
 import spark.*;
 import dataaccess.*;
+import websocket.WebSocketHandler;
 
 public class Server {
     private final UserDAO userDAO = new SQLUser();
@@ -13,6 +14,8 @@ public class Server {
     public int run(int desiredPort) {
         Spark.port(desiredPort);
         Spark.staticFiles.location("web");
+
+        Spark.webSocket("/ws", WebSocketHandler.class);
 
         // Register your endpoints and handle exceptions here.
         Spark.delete("/db", new ClearHandler(authDAO, gameDAO, userDAO));
