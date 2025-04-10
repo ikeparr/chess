@@ -58,6 +58,31 @@ public class WebSocketHandler {
 
     private void connect(UserGameCommand command, Session session) throws IOException {
     }
+        try {
+            connections.add(command.getGameID(), session);
+            String username = authDAO.getAuth(command.getAuthToken()).username();
+            GameData game = gameDAO.getGame(command.getGameID());
+
+            if (game.blackUsername() != null && username.equals(game.blackUsername())) {
+                broadcastMessage(command.getGameID(),
+                        new NotificationMessage(username + " has joined the game as BLACK"),
+                        session);
+            }
+            else if (game.whiteUsername() != null && username.equals(game.whiteUsername())) {
+                broadcastMessage(command.getGameID(),
+                        new NotificationMessage(username + " has joined the game as WHITE"),
+                        session);
+            }
+            LoadGameMessage loadGameMessage = new LoadGameMessage(game.game());
+            String loadGameString = new Gson().toJson(loadGameMessage);
+            sendMessage(loadGameString, session);
+
+        }
+        catch (Exception ex) {
+            onError(ex, session);
+        }
+    }
+
     private void leave(UserGameCommand command, Session session) throws IOException {
     }
     public void makeMove(UserGameCommand command, Session session) throws IOException {
