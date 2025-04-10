@@ -1,5 +1,6 @@
 package service;
 
+import chess.ChessGame;
 import dataaccess.*;
 import model.GameData;
 import java.util.Collection;
