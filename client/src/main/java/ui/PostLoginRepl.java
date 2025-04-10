@@ -33,7 +33,12 @@ public class PostLoginRepl {
                     break;
                 }
                 if (result.equals("User joined game.\n")) {
-                    GameplayRepl gameplayRepl = new GameplayRepl(serverUrl, postLoginClient.authToken, postLoginClient.playerColor, postLoginClient.gameIDJoined);
+                    GameplayRepl gameplayRepl = new GameplayRepl(
+                            serverUrl,
+                            postLoginClient.authToken,
+                            postLoginClient.playerColor,
+                            postLoginClient.gameIDJoined);
+
                     gameplayRepl.run();
                 }
                 if (result.equals("User observing game.\n")) {
