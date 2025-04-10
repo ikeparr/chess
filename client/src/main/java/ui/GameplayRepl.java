@@ -4,13 +4,16 @@ import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
 
+import websocket.NotificationHandler;
+import websocket.messages.Notification;
+
 public class GameplayRepl {
 
     private final GameplayClient gameplayClient;
     private final int serverUrl;
 
-    public GameplayRepl(int serverUrl, String authtoken, String color) {
-        gameplayClient = new GameplayClient(serverUrl, authtoken, color);
+    public GameplayRepl(int serverUrl, String authtoken, String color, int gameID) {
+        gameplayClient = new GameplayClient(serverUrl, authtoken, color, gameID);
         this.serverUrl = serverUrl;
     }
 
@@ -38,6 +41,11 @@ public class GameplayRepl {
             }
         }
         System.out.println();
+    }
+
+    public void notify(Notification notification) {
+        System.out.println(SET_TEXT_COLOR_RED + notification.message());
+        printPrompt();
     }
 
     private void printPrompt() {
