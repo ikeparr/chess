@@ -88,7 +88,42 @@ public class WebSocketHandler {
     }
 
     private void leave(UserGameCommand command, Session session) throws IOException {
+        try {
+            connections.remove(command.getGameID(), session);
+            String username = authDAO.getAuth(command.getAuthToken()).username();
+            GameData game = gameDAO.getGame(command.getGameID());
+
+            if (game.blackUsername() != null && username.equals(game.blackUsername())) {
+                broadcastMessage(command.getGameID(),
+                        new NotificationMessage(username + " has left the game"),
+                        null);
+                gameDAO.updateGame(new GameData(game.gameID(),
+                        game.whiteUsername(),
+                        null,
+                        game.gameName(),
+                        game.game()));
+            }
+            else if (game.whiteUsername() != null && username.equals(game.whiteUsername())) {
+                broadcastMessage(command.getGameID(),
+                        new NotificationMessage(username + " has left the game"),
+                        null);
+                gameDAO.updateGame(new GameData(game.gameID(),
+                        null,
+                        game.blackUsername(),
+                        game.gameName(),
+                        game.game()));
+            }
+            else {
+                broadcastMessage(command.getGameID(),
+                        new NotificationMessage(username + " is no longer observing the game"),
+                        null);
+            }
+        }
+        catch (Exception ex) {
+            onError(ex, session);
+        }
     }
+
     public void makeMove(UserGameCommand command, Session session) throws IOException {
     }
     public void resign(UserGameCommand command, Session session) throws IOException {
