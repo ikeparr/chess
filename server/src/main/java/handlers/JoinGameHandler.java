@@ -28,7 +28,7 @@ public class JoinGameHandler implements Route {
             AuthData user = userService.validateAuthToken(authToken);
             if (request.playerColor() == null || request.gameID() == null || request.gameID() <= 0) {
                 resp.status(400);
-                return gson.toJson(new ErrorResponse("Error: bad request"));
+                return gson.toJson(new ErrorResponse("Error: bad request, either color or gameID was null"));
             }
 
             joinGameService.joinGame(user.username(), request.playerColor, request.gameID());
