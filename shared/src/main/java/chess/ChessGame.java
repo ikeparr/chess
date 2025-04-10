@@ -14,11 +14,13 @@ public class ChessGame {
 
     private TeamColor teamTurn;
     private ChessBoard board;
+    public boolean gameOver;
 
     public ChessGame() {
         this.board = new ChessBoard();
         this.board.resetBoard();
         this.teamTurn = TeamColor.WHITE;
+        this.gameOver = false;
 
     }
 
@@ -232,5 +234,13 @@ public class ChessGame {
      */
     public ChessBoard getBoard() {
         return board;
+    }
+
+    public boolean getGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameIsOver) {
+        gameOver = gameIsOver;
     }
 }
